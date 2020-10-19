@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+
+import {Switch,Route, RouteComponentProps} from 'react-router-dom'
+
+import Aside from "./component/Aside";
+import ContentHeader from "./component/Content.Header";
+import Footer from "./component/Footer";
+import Navbar from "./component/Navbar";
+import Apex from "./pages/Apex";
+import Home from "./pages/Home";
+
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="wrapper">
+      <Navbar />
+      <Aside />
+      <div className="content-wrapper">
+        <ContentHeader />
+        <section className="content">
+          <div className="container-fluid">
+            <Switch>
+              <Route path='/' exact render={
+                                            (props: RouteComponentProps) => <Home  {...props} /> 
+              } />
+              <Route path='/apex' exact render={
+                                            (props: RouteComponentProps) => <Apex  {...props} /> 
+                                            }  />
+            </Switch>
+          </div>
+        </section>
+         </div>
+      <Footer />
     </div>
   );
 }
