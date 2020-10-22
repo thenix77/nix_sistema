@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom'
 import ApiJson from '../ApiJson.json'
 import TablaAlumnos from '../component/TablaAlumnos'
 import TablaClonar from '../component/TablaClonar'
-import  TablaCursos from '../component/TablaCursos'
+import TablaCursos from '../component/TablaCursos'
 import TablaInstructor from '../component/TablaInstructor'
 import TablaListaCruzada from '../component/TablaListaCruzada'
 import TableZonal from '../component/TableZonal'
 //import TableZonal from '../component/TableZonal'
-import { AlumnoCurso, Cursos ,CursosInstructor} from '../lib/source'
+import { AlumnoCurso, Cursos ,CursosInstructor, removeDuplicatesListaCruzada} from '../lib/source'
 import { IVLstCruzada } from '../models/listacruzada.sinfo'
 import { IVMatricula } from '../models/matricula.sinfo'
 import { ITutoria} from '../models/tutoria.sinfo'
@@ -190,7 +190,9 @@ export default class Apex extends Component<IProps, IState> {
         this.listaCruzada = (this.listaCruzada.length > 0) ?
                             this.state.listacruzada.filter(lc => lc.lc_curso.includes(this.listaCruzada[0].lc_curso)) :
                             []
-               
+       
+        this.listaCruzada = this.listaCruzada.length > 0? removeDuplicatesListaCruzada(this.listaCruzada):[]
+       
         this.setState({
             select:'curso',
             cantidad: this.newMatricula.length,

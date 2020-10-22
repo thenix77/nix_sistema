@@ -1,12 +1,13 @@
 import React from "react";
 
-import {Switch,Route, RouteComponentProps} from 'react-router-dom'
+import {Switch as Sw,Route, RouteComponentProps} from 'react-router-dom'
 
 import Aside from "./component/Aside";
-import ContentHeader from "./component/Content.Header";
+//import ContentHeader from "./component/Content.Header";
 import Footer from "./component/Footer";
 import Navbar from "./component/Navbar";
 import Apex from "./pages/Apex";
+import Comandos from "./pages/Comandos";
 import Home from "./pages/Home";
 
 
@@ -17,17 +18,20 @@ function App() {
       <Navbar />
       <Aside />
       <div className="content-wrapper">
-        <ContentHeader />
+        {/*<ContentHeader />*/}
         <section className="content">
           <div className="container-fluid">
-            <Switch>
+            <Sw>
               <Route path='/' exact render={
                                             (props: RouteComponentProps) => <Home  {...props} /> 
               } />
               <Route path='/apex' exact render={
                                             (props: RouteComponentProps) => <Apex  {...props} /> 
+              } />
+              <Route path='/comandos' exact render={
+                                            (props: RouteComponentProps) => <Comandos  {...props} /> 
                                             }  />
-            </Switch>
+            </Sw>
           </div>
         </section>
          </div>

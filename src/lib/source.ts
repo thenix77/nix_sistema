@@ -1,3 +1,4 @@
+import { IVLstCruzada } from '../models/listacruzada.sinfo'
 import { IVMatricula} from '../models/matricula.sinfo'
 
 export function idAlumno(idalumno: string) {
@@ -19,6 +20,15 @@ export function removeDuplicatesEstudiante(data: IVMatricula[]) {
     let hash: any = {};
     
     data = data.filter((o:IVMatricula) => hash[o.id_alumno] ? false : hash[o.id_alumno] = true);//hash[o.cursoid]
+
+    return data
+}
+
+export function removeDuplicatesListaCruzada(data: IVLstCruzada[]) {
+    
+    let hash: any = {};
+    
+    data = data.filter((o:IVLstCruzada) => hash[o.cursoid] ? false : hash[o.cursoid] = true);//hash[o.cursoid]
 
     return data
 }

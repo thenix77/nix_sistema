@@ -21,7 +21,7 @@ export default class TablaInstructor extends Component<IProps, IState> {
                     <td width='60%' align='left'> 
                         {(curso.instructor !== '') ?
                             <>
-                            ENROLAMIENTO_PUT-crear $token $URL_sitio courseId:{curso.cursoid}  externalId:{curso.id_inst} BB_FACILITATOR </>:
+                            ENROLAMIENTO_PUT-crear $token $URL_sitio courseId:{curso.cursoid} externalId:{curso.id_inst} BB_FACILITATOR </>:
                             ''
                         }
                     </td>
@@ -37,7 +37,7 @@ export default class TablaInstructor extends Component<IProps, IState> {
                         <th align='center'>N</th>
                         <th align='center'>ID Instructor</th>
                         <th align='left'>Instructor</th>
-                        <th align='left'>Script - Enrolar - Instructor</th>
+                        <th align='left'>#Script - Enrolar - Instructor</th>
                     </tr>
                 </thead>
                 <tbody>

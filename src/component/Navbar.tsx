@@ -23,8 +23,8 @@ export default class Navbar extends Component {
             </a>
           </li>
           <li className="nav-item d-none d-sm-inline-block">
-            <Link to="#" className="nav-link">
-              Contact
+            <Link to="/comandos" className="nav-link">
+              Comandos
             </Link>
           </li>
         </ul>

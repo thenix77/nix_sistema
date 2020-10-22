@@ -33,6 +33,7 @@ export default class Content extends Component<IProps,IState> {
 
         this.sinfo = this.sinfo.bind(this)
         this.blackboard = this.blackboard.bind(this)
+        this.comandos = this.comandos.bind(this)
     }
 
     
@@ -48,7 +49,13 @@ export default class Content extends Component<IProps,IState> {
 
     blackboard(event: React.MouseEvent<HTMLElement>){
         event.preventDefault()
-        console.log(event)
+        this.props.history.push('/sinfo')
+    }
+
+    comandos(event: React.MouseEvent<HTMLElement>) {
+        event.preventDefault()
+        if (this.state.visible) return
+        this.props.history.push('/comandos')
     }
 
     async componentDidMount(): Promise<void>{
@@ -128,17 +135,18 @@ export default class Content extends Component<IProps,IState> {
         return (
            
                     <div className="row">
-                         <div className="col-12 col-sm-6 col-md-3 ">
+                        <div className="col-12 col-sm-6 col-md-3 ">
                             <div className="info-box link-black" onClick={this.sinfo}>
-                        <span className="info-box-icon bg-info elevation-1">
-                            <i className={this.state.visible ? "fas fa-cog fa-spin" : "fas fa-cog"}>
-                            </i></span>
+                                <span className="info-box-icon bg-info elevation-1">
+                                    <i className={this.state.visible ? "fas fa-cog fa-spin" : "fas fa-cog"}>
+                                    </i>
+                                </span>
 
                                 <div className="info-box-content">
                                     <span className="info-box-text">Matriculados - Apex</span>
                                     <span className="info-box-number">
-                                    {this.state.visible ? 0: this.state.sinfoCantidadCurso}
-                                    <small> Cursos Registrados</small>
+                                        {this.state.visible ? 0: this.state.sinfoCantidadCurso}
+                                        <small> Cursos Registrados</small>
                                     </span>
                                 </div>
                             </div>
@@ -151,8 +159,21 @@ export default class Content extends Component<IProps,IState> {
                                 <div className="info-box-content">
                                     <span className="info-box-text">Matriculados - Blackboard</span>
                                     <span className="info-box-number">
-                                    {this.state.visible ? 0: this.state.bbCantidadCurso}
-                                    <small> Cursos Registrados</small>
+                                        {this.state.visible ? 0: this.state.bbCantidadCurso}
+                                        <small> Cursos Registrados</small>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-3 ">
+                            <div className="info-box link-black" onClick={this.comandos}>
+                        <span className="info-box-icon bg-purple elevation-1">
+                            <i className={this.state.visible ? "fas fa-cog fa-spin" : "fas fa-cog"}></i></span>
+
+                                <div className="info-box-content">
+                                    <span className="info-box-text">Comandos Directos</span>
+                                    <span className="info-box-number">
+                                        <small> Comandos Directos</small>
                                     </span>
                                 </div>
                             </div>
