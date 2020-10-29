@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { ValidarEmail, ValidarNumero, ValidarTexto } from '../lib/validation'
 
-import Switch , { Item } from "react-switchable";
+import  { Item } from "react-switchable";
+import Sw from "react-switchable"
 import "react-switchable/dist/main.css";
 
 interface IProps {}
@@ -15,7 +16,8 @@ interface IState {
     validIdSinfo: boolean
     validApellido: boolean
     validNombre: boolean
-    accesoPlataforma:string
+    accesoPlataforma: string
+   
 }
 
 export default class ComandoAlumno extends Component<IProps,IState> {
@@ -32,7 +34,8 @@ export default class ComandoAlumno extends Component<IProps,IState> {
             validIdSinfo: false,
             validApellido: false,
             validNombre: false,
-            accesoPlataforma:'Y'
+            accesoPlataforma: 'Y',
+           
         }
 
         this.handleIdSinfo = this.handleIdSinfo.bind(this)
@@ -165,7 +168,7 @@ export default class ComandoAlumno extends Component<IProps,IState> {
                                     <td width='90%'>
                                         {this.state.validApellido && this.state.validNombre && this.state.validIdSinfo && this.state.validCorreo ?
                                         <>
-                                            USUARIO_POST - Crear $token $URL_sitio {this.state.idsinfo}@senati.pe '{this.state.apellido.toUpperCase()}' '{this.state.nombre.toUpperCase()}' '{this.state.idsinfo.padStart(9, "000000000")}' '987654321' '{this.state.correo.toLowerCase()}'
+                                            USUARIO_POST-Crear $token $URL_sitio {this.state.idsinfo}@senati.pe '{this.state.apellido.toUpperCase()}' '{this.state.nombre.toUpperCase()}' '{this.state.idsinfo.padStart(9, "000000000")}' '987654321' '{this.state.correo.toLowerCase()}'
                                         </> :
                                         <></>
                                     }
@@ -173,13 +176,13 @@ export default class ComandoAlumno extends Component<IProps,IState> {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <Switch
+                                        {/*<Sw
                                                 name="Activar Plataforma"
                                                 onItemChanged={(index) => {this.handleAccesoBB(index)}}
                                             >
                                                 <Item default value="Y">Activo</Item>
                                                 <Item value="N">Desactivado</Item>
-                                        </Switch>
+                                        </Sw>*/}
                                     </td>
                                     <td width='90%'>
                                         {this.state.validIdSinfo ? 

@@ -20,7 +20,7 @@ export default class Aside extends Component {
                 <img
                   src="dist/img/user2-160x160.jpg"
                   className="img-circle elevation-2"
-                  alt="User Image" />
+                />
             </div>
             <div className="info">
               <Link to="#" className="d-block">

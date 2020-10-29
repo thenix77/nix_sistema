@@ -13,3 +13,11 @@ export interface IVMatricula {
   cdg_status: string;
   zonal: string;
 }
+
+export interface IBBCursosMatriculados{
+    batch_uid: string
+    course_id: string
+    role: string
+    row_status: string
+    sourcedid_id: string
+}

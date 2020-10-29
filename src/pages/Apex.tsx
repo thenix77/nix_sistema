@@ -156,7 +156,7 @@ export default class Apex extends Component<IProps, IState> {
             cantidad: this.newMatricula.length,
             titulo: ' - '+ idalumno + alumnoNombre,
         })
-       
+    
     }
 
     handleCurso(event: React.MouseEvent<HTMLElement>) {
@@ -198,6 +198,7 @@ export default class Apex extends Component<IProps, IState> {
             cantidad: this.newMatricula.length,
             titulo: ' - ' +cursoid,
         })
+
     }
 
 
@@ -249,6 +250,7 @@ export default class Apex extends Component<IProps, IState> {
                                         placeholder="Ingrese el valor a buscar"
                                         className="form-control form-control-sm"
                                         value={this.state.dato}
+                                        disabled={this.state.activar}
                                         onChange={
                                                 ({target}:React.ChangeEvent<HTMLInputElement>)=>{
                                                 this.setState({

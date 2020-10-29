@@ -6,3 +6,11 @@ export interface IVLstCruzada{
   tipo:string
   lc_curso:string
 }
+
+
+export interface ILstMasiva{
+  lc: string
+  nrc: string
+  tipo: string
+  fecha:string
+}

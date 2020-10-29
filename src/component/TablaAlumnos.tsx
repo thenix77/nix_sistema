@@ -12,8 +12,9 @@ interface IState {}
 
 export default class TablaAlumnos extends Component<IProps,IState> {
     render() {
-        console.log(this.props.cursos);
-         const tableBoby = this.props.cursos.map((curso, i) => {
+       
+        const tableBoby = this.props.cursos.filter(curso => curso.pago !== 'PaganteN')
+                                            .map((curso, i) => {
             return (
                 <tr key={i}  >
                     <td width='5%' align='center'>{i + 1}</td>

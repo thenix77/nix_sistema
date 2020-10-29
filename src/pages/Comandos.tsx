@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import ComandoAlumno from '../component/ComandoAlumno'
+import ComandoCursos from '../component/ComandoCursos'
+import ComandoListaCruzada from '../component/ComandoListaCruzada'
 
 
 interface IProps extends RouteComponentProps {}
 
 interface IState {
-    alumno:boolean
+    select:string
 }
 
 
@@ -15,20 +17,37 @@ export default class Comandos extends Component<IProps, IState> {
         super(props)
 
         this.state = {
-            alumno:false
+            select:''
         }
 
         this.handleComandoAlumno = this.handleComandoAlumno.bind(this)
-
+        this.handleComandoListaCruzada = this.handleComandoListaCruzada.bind(this)
+        this.handleComandoCursos = this.handleComandoCursos.bind(this)
     }
 
     handleComandoAlumno(event: React.MouseEvent<HTMLElement>) {
         event.preventDefault()
 
         this.setState({
-            alumno:true
+            select:'alumno'
         })
         
+    }
+
+    handleComandoListaCruzada(event: React.MouseEvent<HTMLElement>) {
+        event.preventDefault()
+
+        this.setState({
+            select:'listacruzada'
+        })
+    }
+
+     handleComandoCursos(event: React.MouseEvent<HTMLElement>) {
+        event.preventDefault()
+
+        this.setState({
+            select:'cursos'
+        })
     }
 
     render() {
@@ -57,13 +76,12 @@ export default class Comandos extends Component<IProps, IState> {
                             <button className="btn btn-app" onClick={this.handleComandoAlumno}>
                                 <i className="fas fa-users"></i> Usuario BB
                             </button>
-                             <button className="btn btn-app" onClick={()=>{}}>
-                                <span className="badge bg-success">{ localStorage.getItem('cantidadAplexCursos')}</span>
+                             <button className="btn btn-app" onClick={this.handleComandoCursos}>
                                 <i className="fas fa-barcode"></i> Cursos 
                             </button>
-                            <Link to="#" className="btn btn-app">
-                                <i className="fas fa-chalkboard-teacher"></i> Instructor
-                            </Link>
+                            <button  className="btn btn-app"  onClick={this.handleComandoListaCruzada}>
+                                <i className="fas fa-tasks"></i> Lista Cruzada
+                            </button>
                             <Link to="#" className="btn btn-app">
                                 <i className="fas fa-journal-whills"></i> Tutoria
                             </Link>
@@ -89,11 +107,18 @@ export default class Comandos extends Component<IProps, IState> {
                                 </div>
                                 <div className="card-body " style={{ margin: "10px" }} > 
                                     <div style={{width:'100%'}}>
-                                        {   (this.state.alumno)?
+                                        {   (this.state.select ==='alumno')?
                                                 <ComandoAlumno />          :
                                                 <></>
                                         }
-                                        
+                                        {   (this.state.select === 'listacruzada')?
+                                                <ComandoListaCruzada />          :
+                                                <></>
+                                        }
+                                        {   (this.state.select === 'cursos')?
+                                                <ComandoCursos />          :
+                                                <></>
+                                        }
                                         
                                     </div>
                                 </div>    

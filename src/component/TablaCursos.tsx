@@ -27,10 +27,12 @@ export default class TableCursos extends Component<IProps, IState> {
             )
         })
 
-         const tableBoby1 = this.props.cursos.filter(curso => curso.calificable.includes('N')).map((curso, i) => {
+         const tableBoby1 = this.props.cursos.filter(curso => curso.calificable.includes('N'))
+                    .filter(curso => curso.pago !=='PaganteN')
+                    .map((curso, i) => {
             return (
                 <tr key={i+100}>
-                    <td width='5%'  align='center'>{i+1}</td>
+                    <td width='5%' align='center'>{i + 1} - {curso.pago}</td>
                     <td width='15%' align='center'>{curso.cursoid}</td>
                     <td width='25'>{curso.curso}</td>
                     <td width='55%' align='center'>  
@@ -38,13 +40,28 @@ export default class TableCursos extends Component<IProps, IState> {
                     </td>
                 </tr>
             )
-        })
+                    })
+        
+        
  
 
         return (
             <>
+                
+            {
+                        this.props.cursos[0].pago === 'PaganteN' ?
+                        <div className="alert alert-danger w-100 text-bold text-center" role="alert">
+                            Estudiante con deuda
+                        </div>       
+                                
+                        :       
+                        <>
+                        </>        
+                    }       
+
             <table className='table table-bordered table-striped' style={{ fontSize: 'x-small' }} width='100%'>
                 <thead>
+                     
                     <tr >
                         <th align='center'>N</th>
                         <th align='center'>ID Curso</th>

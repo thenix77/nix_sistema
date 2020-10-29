@@ -13,9 +13,7 @@ interface IState {
     visible: boolean
     sinfoCantidadCurso: number
     sinfoCantidadAlumno:number
-    bbCantidadCurso: number
-    bbCantidadAlumno:number
-    
+     
 }
 
 export default class Content extends Component<IProps,IState> {
@@ -27,8 +25,7 @@ export default class Content extends Component<IProps,IState> {
             visible: false,
             sinfoCantidadCurso: 0,
             sinfoCantidadAlumno:0,
-            bbCantidadCurso: 0,
-            bbCantidadAlumno:0
+          
         }
 
         this.sinfo = this.sinfo.bind(this)
@@ -94,38 +91,7 @@ export default class Content extends Component<IProps,IState> {
                     })
                 })
         
-        await   fetch(`${ApiJson.Api}/BB/Cursos/cantidadCursos`,
-                {
-                    method:'GET',
-                    headers:{
-                        'Content-Type':'Application/json',
-                        'token':localStorage.getItem('token') || ''
-                    }
-                })
-                .then((db)=> db.json())
-                .then((data)=>{
-                    
-                    this.setState({
-                        bbCantidadCurso: data.length
-                    })
-                })
-        
-        await   fetch(`${ApiJson.Api}/BB/Cursos/cantidadAlumnos`,
-                {
-                    method:'GET',
-                    headers:{
-                        'Content-Type':'Application/json',
-                        'token':localStorage.getItem('token') || ''
-                    }
-                })
-                .then((db)=> db.json())
-                .then((data)=>{
-                    
-                    this.setState({
-                        bbCantidadAlumno: data.length
-                    })
-                })
-        
+                      
         this.setState ({
             visible:false
         })
@@ -158,10 +124,6 @@ export default class Content extends Component<IProps,IState> {
 
                                 <div className="info-box-content">
                                     <span className="info-box-text">Matriculados - Blackboard</span>
-                                    <span className="info-box-number">
-                                        {this.state.visible ? 0: this.state.bbCantidadCurso}
-                                        <small> Cursos Registrados</small>
-                                    </span>
                                 </div>
                             </div>
                         </div>
