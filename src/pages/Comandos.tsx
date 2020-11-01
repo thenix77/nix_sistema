@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import ComandoAlumno from '../component/ComandoAlumno'
 import ComandoCursos from '../component/ComandoCursos'
+import ComandoCursosMasivos from '../component/ComandoCursosMasivos'
 import ComandoListaCruzada from '../component/ComandoListaCruzada'
 
 
@@ -23,6 +24,8 @@ export default class Comandos extends Component<IProps, IState> {
         this.handleComandoAlumno = this.handleComandoAlumno.bind(this)
         this.handleComandoListaCruzada = this.handleComandoListaCruzada.bind(this)
         this.handleComandoCursos = this.handleComandoCursos.bind(this)
+
+        this.handleComandoCursosMasivo = this.handleComandoCursosMasivo.bind(this)
     }
 
     handleComandoAlumno(event: React.MouseEvent<HTMLElement>) {
@@ -47,6 +50,14 @@ export default class Comandos extends Component<IProps, IState> {
 
         this.setState({
             select:'cursos'
+        })
+    }
+
+    handleComandoCursosMasivo(event: React.MouseEvent<HTMLElement>) {
+        event.preventDefault()
+
+        this.setState({
+            select: 'cursosMasivo'
         })
     }
 
@@ -78,6 +89,9 @@ export default class Comandos extends Component<IProps, IState> {
                             </button>
                              <button className="btn btn-app" onClick={this.handleComandoCursos}>
                                 <i className="fas fa-barcode"></i> Cursos 
+                            </button>
+                            <button className="btn btn-app" onClick={this.handleComandoCursosMasivo}>
+                                <i className="fas fa-barcode"></i> Cursos Masivo
                             </button>
                             <button  className="btn btn-app"  onClick={this.handleComandoListaCruzada}>
                                 <i className="fas fa-tasks"></i> Lista Cruzada
@@ -117,6 +131,10 @@ export default class Comandos extends Component<IProps, IState> {
                                         }
                                         {   (this.state.select === 'cursos')?
                                                 <ComandoCursos />          :
+                                                <></>
+                                        }
+                                        {   (this.state.select === 'cursosMasivo')?
+                                                <ComandoCursosMasivos />          :
                                                 <></>
                                         }
                                         

@@ -132,7 +132,7 @@ export default class Apex extends Component<IProps, IState> {
         this.setState({
             cantidad: 0,
             titulo: '',
-            dato:''
+            dato: '',
         })
 
         this.newMatricula  = []
@@ -141,7 +141,7 @@ export default class Apex extends Component<IProps, IState> {
 
         if (this.state.dato === '') return
         
-        this.newMatricula = AlumnoCurso(this.state.matricula, this.state.dato)
+        this.newMatricula = AlumnoCurso(this.state.matricula, this.state.dato.trim())
 
         const idalumno =    this.newMatricula.length !== 0 ? 
                             this.newMatricula[0].id_alumno :
@@ -157,6 +157,7 @@ export default class Apex extends Component<IProps, IState> {
             titulo: ' - '+ idalumno + alumnoNombre,
         })
     
+        console.log(this.newMatricula)
     }
 
     handleCurso(event: React.MouseEvent<HTMLElement>) {
@@ -176,7 +177,7 @@ export default class Apex extends Component<IProps, IState> {
 
         if (this.state.dato === '') return
 
-        this.newMatricula = Cursos(this.state.matricula, this.state.dato)
+        this.newMatricula = Cursos(this.state.matricula, this.state.dato.trim())
 
         if (this.newMatricula.length === 0) return
 
@@ -284,7 +285,7 @@ export default class Apex extends Component<IProps, IState> {
                             </div>
                                 <div className="card-body " style={{ margin: "10px" }} > 
                                     <div style={{width:'100%'}}>
-                                        {   (this.state.select === 'alumno')?
+                                        {   (this.state.select === 'alumno' && this.newMatricula.length !== 0)?
                                             <TablaCursos cursos={this.newMatricula} />  :
                                             <></>
                                         }
