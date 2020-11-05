@@ -1,11 +1,11 @@
-import { event } from 'jquery'
 import React, { Component, Fragment } from 'react'
 import ApiJson from '../ApiJson.json'
-import { AnalizarBBMat, AnalizarNrc } from '../lib/analisisListaCruzada'
+import { AnalizarBBMat, AnalizarBBInst, AnalizarNrc } from '../lib/analisisListaCruzada'
 import { IEnrolamiento } from '../models/enrolamiento'
 import { IVMatricula } from '../models/matricula.sinfo'
 import { ITerm } from '../models/term.bb'
 import TablaComandoAlumno from './TablaComandoAlumno'
+import TablaInstructor from './TablaInstructor'
 
 interface IProps { }
 
@@ -24,6 +24,7 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
     private findNrcs: IVMatricula[] = []
     private BBMatriculados: IEnrolamiento[] = []
     private BBMatVerificados: IVMatricula[] = []
+    
     
     constructor(props: IProps) {
         super(props)
@@ -108,8 +109,8 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
         }
 
         this.BBMatriculados = this.state.enrolamiento.filter(enr => enr.sourcedid_id === target.value)
-        
-         this.setState({ active: false })                                            
+
+        this.setState({ active: false })                                            
     }
 
 
@@ -118,6 +119,7 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
         event.preventDefault()
 
         this.findNrcs = []
+        this.BBMatVerificados = []
 
         if (this.state.nrcs.length === 0) return
         if(this.state.periodo === '') return
@@ -126,11 +128,17 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
       
         switch (option) {
             case 'estudiantes':
-                this.setState({ options: 'estudiantes'})
+                this.setState({ options: 'estudiantes' })
                 this.findNrcs = this.Analizar()
-                this.BBMatVerificados = AnalizarBBMat(this.BBMatriculados, this.Analizar())
-            break
-            
+                this.BBMatVerificados = AnalizarBBMat(this.BBMatriculados.filter(mat => mat.role === 'S'), this.Analizar())
+                break
+            case 'instructores':
+                this.setState({ options: 'instructores' })
+                this.findNrcs = this.Analizar()
+                this.BBMatVerificados = AnalizarBBInst(this.BBMatriculados.filter(mat => mat.role === 'BB_FACILITATOR')
+                                                                          .filter(mat => mat.habilitado === 'Y')
+                                                        , this.Analizar())
+                break
         }
         
 
@@ -230,6 +238,11 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                                 <TablaComandoAlumno Matriculados={this.BBMatVerificados}
                                                     BBMatriculados={this.BBMatVerificados}
                                 /> :
+                                <></>
+                        }
+                        {
+                            (this.state.options === 'instructores') ?
+                                <TablaInstructor cursos={this.BBMatVerificados} /> :
                                 <></>
                         }
                     </div>

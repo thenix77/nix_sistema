@@ -3,7 +3,7 @@ import { IEnrolamiento } from '../models/enrolamiento'
 import { ILstMasiva } from '../models/listacruzada.sinfo'
 import { IVMatricula } from '../models/matricula.sinfo'
 import Apex from '../pages/Apex'
-import { removeDuplicatesCurso, removeDuplicatesEstudiante } from './source'
+import { removeDuplicatesCurso, removeDuplicatesEstudiante, removeDuplicatesInstructor } from './source'
 
 
 
@@ -39,9 +39,7 @@ export function AnalizarNrc(Apexs: IVMatricula[], find:any):IVMatricula[]{
 export function AnalizarBBMat(BBMatriculados: IEnrolamiento[], ApexMatriculados: IVMatricula[]) {
     
     let listaBB: IVMatricula[] = []
-    let lista: IVMatricula[] = []
-    let newLista: IVMatricula[] = []
-        
+    
     for (let i = 0; i < BBMatriculados.length; i++){
         ApexMatriculados.filter(apexMat => apexMat.cursoid === BBMatriculados[i].course_id &&
                                             apexMat.id_alumno === BBMatriculados[i].student_id 
@@ -59,5 +57,36 @@ export function AnalizarBBMat(BBMatriculados: IEnrolamiento[], ApexMatriculados:
     }
 
     return ApexMatriculados
+    
+}
+
+export function AnalizarBBInst(BBMatriculados: IEnrolamiento[], ApexMatriculados: IVMatricula[]) {
+    
+    let listaBB: IVMatricula[] = []
+       
+    const listaCursos:IVMatricula[] = removeDuplicatesCurso(ApexMatriculados)
+    const ApexInst:IVMatricula[] = listaCursos.filter(lst => lst.id_inst !== '')
+
+    console.log('/****Apex***/')
+    console.log(ApexInst)
+    
+    for (let i = 0; i < BBMatriculados.length; i++){
+        ApexInst.filter(apexMat =>  apexMat.cursoid === BBMatriculados[i].course_id &&
+                                    apexMat.id_inst === BBMatriculados[i].student_id 
+                                )
+                .map(apexMat=> listaBB.push(apexMat))
+    }
+
+    console.log('/*****BB*****/')
+    console.log(listaBB)
+
+    let index:number =0
+    for (let j = 0; j < listaBB.length; j++) {
+        index = ApexInst.indexOf(listaBB[j])
+        ApexInst.splice(index,1)
+        
+    }
+
+    return  ApexInst
     
 }

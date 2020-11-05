@@ -7,6 +7,7 @@ export interface IEnrolamiento{
     email: string
     course_id: string
     sourcedid_id: string
-    Role: string
+    role: string
     row_status: string
+    habilitado:string
 }
