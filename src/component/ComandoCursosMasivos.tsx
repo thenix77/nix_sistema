@@ -1,30 +1,34 @@
 import React, { Component, Fragment } from 'react'
 import ApiJson from '../ApiJson.json'
-import { AnalizarBBMat, AnalizarBBInst, AnalizarNrc } from '../lib/analisisListaCruzada'
+import { AnalizarNrc, SupervisoresCursos } from '../lib/analisisListaCruzada'
+import { removeDuplicatesCurso } from '../lib/source'
 import { IEnrolamiento } from '../models/enrolamiento'
 import { IVMatricula } from '../models/matricula.sinfo'
 import { ITerm } from '../models/term.bb'
-import TablaComandoAlumno from './TablaComandoAlumno'
-import TablaInstructor from './TablaInstructor'
+import { ICursoSupervisor, ISupervisores } from '../models/zonal.sinfo'
+import TablaMasivaAlumno from './TablaMasivaAlumno'
+import TablaMasivaCursos from './TablaMasivaCursos'
+import TablaMasivaInstructor from './TablaMasivaInstructor'
+import TablaMasivaSupervisores from './TablaMasivaSupervisores'
 
 interface IProps { }
 
 interface IState {
     active: boolean
     periodos: ITerm[]
-    matriculas: IVMatricula[]
+    Apexmatriculas: IVMatricula[]
     periodo: string
     nrcs: string,
     options: string,
     enrolamiento: IEnrolamiento[]
+    supervisores: ISupervisores[]
 }
 
 export default class ComandoCursosMasivos extends Component<IProps, IState> {
 
     private findNrcs: IVMatricula[] = []
     private BBMatriculados: IEnrolamiento[] = []
-    private BBMatVerificados: IVMatricula[] = []
-    
+    private supervisores:ICursoSupervisor[] = []
     
     constructor(props: IProps) {
         super(props)
@@ -32,11 +36,12 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
         this.state = {
             active: false,
             periodos: [],
-            matriculas:[],
+            Apexmatriculas:[],
             periodo: '',
             nrcs: '',
             options: '',
-            enrolamiento:[]
+            enrolamiento: [],
+            supervisores: []
         }
 
         this.handleClick = this.handleClick.bind(this)
@@ -77,7 +82,7 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                 .then((db)=> db.json())
                 .then((data)=>{
                     this.setState({
-                        matriculas: data.data
+                        Apexmatriculas: data.data
                     })
                 })
     
@@ -94,6 +99,21 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
             .then((data) => {
                 this.setState({
                     enrolamiento: data.data
+                })
+            })
+
+     await fetch(`${ApiJson.Api}/sinfo/zonal/supervisores`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'Application/json',
+                    'token': localStorage.getItem('token') || ''
+                },
+            })
+            .then((db) => db.json())
+            .then((data) => {
+                this.setState({
+                    supervisores: data.data
                 })
             })
 
@@ -119,7 +139,8 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
         event.preventDefault()
 
         this.findNrcs = []
-        this.BBMatVerificados = []
+        this.supervisores = []
+        this.BBMatriculados = []
 
         if (this.state.nrcs.length === 0) return
         if(this.state.periodo === '') return
@@ -130,14 +151,23 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
             case 'estudiantes':
                 this.setState({ options: 'estudiantes' })
                 this.findNrcs = this.Analizar()
-                this.BBMatVerificados = AnalizarBBMat(this.BBMatriculados.filter(mat => mat.role === 'S'), this.Analizar())
+                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.role === 'S').filter(mat => mat.habilitado === 'Y')
                 break
             case 'instructores':
                 this.setState({ options: 'instructores' })
-                this.findNrcs = this.Analizar()
-                this.BBMatVerificados = AnalizarBBInst(this.BBMatriculados.filter(mat => mat.role === 'BB_FACILITATOR')
-                                                                          .filter(mat => mat.habilitado === 'Y')
-                                                        , this.Analizar())
+                this.findNrcs = removeDuplicatesCurso(this.Analizar())
+                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.role === 'BB_FACILITATOR').filter(mat => mat.habilitado === 'Y')
+                break
+            case 'supervisores':
+                this.setState({ options: 'supervisores' })
+                this.findNrcs = removeDuplicatesCurso(this.Analizar())
+                this.supervisores = SupervisoresCursos(this.findNrcs, this.state.supervisores)
+                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.role === 'Sup').filter(mat => mat.habilitado === 'Y')
+                break
+            case 'cursos':
+                this.setState({ options: 'cursos' })
+                this.findNrcs = removeDuplicatesCurso(this.Analizar())
+                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.habilitado === 'Y')
                 break
         }
         
@@ -148,7 +178,7 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
 
     Analizar() {
         let NRCS = this.state.nrcs.split(',')
-        return AnalizarNrc(this.state.matriculas, NRCS)
+        return AnalizarNrc(this.state.Apexmatriculas, NRCS)
     }
 
   
@@ -223,6 +253,20 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                                         >
                                             <i className="fas fa-user-graduate"></i>
                                         </button>
+                                        <button     className="btn btn-outline-secondary"
+                                                    name='usuario'
+                                                    disabled={this.state.active}
+                                                    onClick={(event) => this.handleClick(event, 'supervisores')}
+                                        >
+                                            <i className="fas fa-sitemap"></i>
+                                        </button>
+                                        <button     className="btn btn-outline-secondary"
+                                                    name='usuario'
+                                                    disabled={this.state.active}
+                                                    onClick={(event) => this.handleClick(event, 'cursos')}
+                                        >
+                                            <i className="fas fa-journal-whills"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -235,14 +279,30 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                     <div className="col-md-12">
                         {
                             (this.state.options === 'estudiantes') ?
-                                <TablaComandoAlumno Matriculados={this.BBMatVerificados}
-                                                    BBMatriculados={this.BBMatVerificados}
+                                <TablaMasivaAlumno apexMatriculados={this.findNrcs}
+                                                   bbMatriculados={this.BBMatriculados}
                                 /> :
                                 <></>
                         }
                         {
                             (this.state.options === 'instructores') ?
-                                <TablaInstructor cursos={this.BBMatVerificados} /> :
+                                <TablaMasivaInstructor  apexMatriculados={this.findNrcs}
+                                                        bbMatriculados={this.BBMatriculados}
+                                /> :
+                                <></>
+                        }
+                         {
+                            (this.state.options === 'supervisores') ?
+                                <TablaMasivaSupervisores  supervisores={this.supervisores}
+                                                          bbMatriculados={this.BBMatriculados}
+                                /> :
+                                <></>
+                        }
+                        {
+                            (this.state.options === 'cursos') ?
+                                <TablaMasivaCursos  apexMatriculados={this.findNrcs}
+                                                    bbMatriculados={this.BBMatriculados}
+                                /> :
                                 <></>
                         }
                     </div>

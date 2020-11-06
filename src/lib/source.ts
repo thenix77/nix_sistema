@@ -24,6 +24,15 @@ export function removeDuplicatesEstudiante(data: IVMatricula[]) {
     return data
 }
 
+export function removeDuplicatesCursoEstudiante(data: IVMatricula[]) {
+    
+    let hash: any = {};
+    
+    data = data.filter((o:IVMatricula) => hash[o.id_alumno && o.cursoid] ? false : hash[o.id_alumno && o.cursoid] = true);//hash[o.cursoid]
+
+    return data
+}
+
 export function removeDuplicatesListaCruzada(data: IVLstCruzada[]) {
     
     let hash: any = {};

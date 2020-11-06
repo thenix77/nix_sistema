@@ -2,6 +2,7 @@ import { findAllByAltText, findAllByPlaceholderText } from '@testing-library/rea
 import { IEnrolamiento } from '../models/enrolamiento'
 import { ILstMasiva } from '../models/listacruzada.sinfo'
 import { IVMatricula } from '../models/matricula.sinfo'
+import { ICursoSupervisor, ISupervisores } from '../models/zonal.sinfo'
 import Apex from '../pages/Apex'
 import { removeDuplicatesCurso, removeDuplicatesEstudiante, removeDuplicatesInstructor } from './source'
 
@@ -30,7 +31,8 @@ export function AnalizarNrc(Apexs: IVMatricula[], find:any):IVMatricula[]{
         Apexs.filter(apex => apex.nrc === find[i].toString().trim())
              .filter(apex => apex.calificable === 'Y')
              .filter(apex => apex.pago !== 'PaganteN')
-             .map((apex) => lista.push(apex) )
+            .map((apex) => lista.push(apex))
+        lista = removeDuplicatesEstudiante(lista)
     }
     
     return lista
@@ -89,4 +91,18 @@ export function AnalizarBBInst(BBMatriculados: IEnrolamiento[], ApexMatriculados
 
     return  ApexInst
     
+}
+
+export function SupervisoresCursos(findNrcs: IVMatricula[], Supervisores: ISupervisores[]) {
+    
+    let sup:ICursoSupervisor[] = []
+
+    for (let j = 0; j < findNrcs.length; j++) {
+        
+        Supervisores.filter(sup => sup.zonal === findNrcs[j].zonal).map(x => 
+            sup.push({curso:findNrcs[j].cursoid , supervisor:x.First ,zonal:x.zonal,correo:x.name   })    
+        )
+        
+    }
+    return sup
 }
