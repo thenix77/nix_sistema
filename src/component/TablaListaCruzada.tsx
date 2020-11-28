@@ -10,17 +10,17 @@ interface IState {}
 export default class TablaListaCruzada extends Component<IProps,IState> {
     render() {
 
-         const tableBoby = this.props.listaCruzada.map((dato, i) => {
+         const tableBoby = this.props.listaCruzada.map((dato:IVLstCruzada, i:number) => {
             return (
                 <tr key={i}>
                     <td width='5%' align='center'>
-                         { dato.tipo.toUpperCase() === 'PADRE'? 'P':'H' } 
+                         { dato.tipo === 'PADRE'? 'P':'H' } 
                     </td>
                     <td width='8%' align='center'>{dato.nrc}</td>
                     <td width='27%'>{dato.cursoid}</td>
                     <td width='60%' align='left'>  
                         LC_PUT-Crear $token $URL_sitio courseId:{dato.lc_curso} courseId:{dato.cursoid} <br />
-                        CURSO_PATCH-Periodo $token $URL_sitio courseId:{dato.cursoid} externalId:202020
+                        CURSO_PATCH-Periodo $token $URL_sitio courseId:{dato.cursoid} externalId:{dato.periodo} 
                     </td>
                 </tr>
             )
@@ -44,7 +44,7 @@ export default class TablaListaCruzada extends Component<IProps,IState> {
                         <td>{ this.props.listaCruzada[0].lc_curso }</td>
                         <td align='left'>
                             CLONAR_POST-Curso $token $URL_sitio courseId:{this.props.listaCruzada[0].patron} {this.props.listaCruzada[0].lc_curso} <br />
-                            CURSO_PATCH-Periodo $token $URL_sitio courseId:{this.props.listaCruzada[0].lc_curso} externalId:202020
+                            CURSO_PATCH-Periodo $token $URL_sitio courseId:{this.props.listaCruzada[0].lc_curso} externalId:{this.props.listaCruzada[0].periodo}
                         </td>
                     </tr>
                     {tableBoby}

@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { IEnrolamiento } from '../models/enrolamiento'
-import { IVMatricula } from '../models/matricula.sinfo'
+import { IBbSinfo } from '../models/bbsinfo'
+import { removeDuplicatesCursoBBSinfo} from '../lib/source'
 
 interface IProps {
-    apexMatriculados: IVMatricula[]
-    bbMatriculados: IEnrolamiento[]
+    bbSinfoMatriculados:IBbSinfo[]
 }
 
 interface IState {}
@@ -12,39 +11,74 @@ interface IState {}
 export default class TablaMasivaCursos extends Component<IProps,IState> {
     render() {
 
-        const tbodyHtml = this.props.apexMatriculados.filter(apex => apex.calificable ==='Y').map((apex: IVMatricula, index: number) => {
-            return (
-                
-                this.props.bbMatriculados.filter(bb => bb.course_id === apex.cursoid).length === 0 ?
-                    <tr key={index.toString() + '-' + apex.cursoid}>
-                        <td align='center'>{apex.cursoid} </td>
-                        <td align='center'> {apex.curso}</td>
-                        <td align='center'>{apex.zonal}</td>
+        let bbSinfoMatriculados: IBbSinfo[] = []
+        bbSinfoMatriculados = removeDuplicatesCursoBBSinfo(this.props.bbSinfoMatriculados)
+
+        const tbodyHtml = bbSinfoMatriculados.filter(c => c.calificable === 'Y')
+            .filter(curso => curso.supregistrado === 'N')
+            .map((curso: IBbSinfo, i: number) => {
+                return (
+                    <tr key={curso.cursoid+'-'+i.toString()+'-C'}>
+                        <td align='center'>{curso.calificable}</td>
+                        <td align='center'>{curso.cursoid}</td>
+                        <td align='center'>{curso.patron}</td>
                         <td>
-                            CLONAR_POST-Curso $token $URL_sitio courseId:{apex.patron} {apex.cursoid}
+                            CLONAR_POST-Curso $token $URL_sitio courseId:{curso.patron} {curso.cursoid}
                         </td>
                     </tr>
-                    :
-                    <Fragment key={index.toString() + '-' + apex.cursoid} >
-                        
-                    </Fragment>
-                    
-            )
-        })
+                )
+            })
+        
+        const tbodyHtmlPer = bbSinfoMatriculados.filter(c => c.calificable === 'Y')
+            .filter(curso => curso.userregistrado === 'N')
+            .map((curso: IBbSinfo, i: number) => {
+                return (
+                    <tr key={curso.cursoid+'-'+i.toString()+'-P'}>
+                        <td align='center'>{curso.instregistrado}</td>
+                        <td align='center'>{curso.cursoid}</td>
+                        <td align='center'>{curso.patron}</td>
+                        <td align='justify'>
+                            CURSO_PATCH-Periodo $token $URL_sitio courseId:{curso.cursoid} externalId:{curso.periodo}
+                        </td>
+                    </tr>
+                )
+            })
+        
+        const tbodyHtmlClo = bbSinfoMatriculados
+            .filter(curso => curso.userregistrado === 'Y')
+            .map((curso: IBbSinfo, i: number) => {
+                return (
+                    <tr key={curso.cursoid+'-'+i.toString()+'-P'}>
+                        <td align='center'>{curso.cursoid}</td>
+                        <td align='center'>{curso.cursoid}</td>
+                        <td align='center'>{curso.patron}</td>
+                        <td align='center'>
+                            {
+                                (curso.calificable === 'N')?
+                                <span>NO CALIFICABLE</span>
+                            :
+                                <span>CURSO CLONADO</span>
+                            }
+                        </td>
+                    </tr>
+                )
+            })
 
         return (
             <Fragment>
                 <table className='table table-bordered table-striped' width='100%' style={{fontSize:'x-small'}}>
                     <thead>
                         <tr>
-                            <td width='15%' align='center'>Nrc </td>
-                            <td width='15%' align='center'>Curso</td>
-                            <td width='20%' align='left'>Zonal</td>
+                            <td width='6%' align='center'> clonado </td>
+                            <td width='17%' align='center'> Curso</td>
+                            <td width='17%' align='left'>   Patron</td>
                             <td width='50%' align='center'>Script - Clonar - Cursos</td>
                         </tr>
                     </thead>
                     <tbody>
                         {tbodyHtml}
+                        {tbodyHtmlPer}
+                        {tbodyHtmlClo}
                     </tbody>
                 </table>
                 

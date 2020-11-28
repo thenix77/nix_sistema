@@ -46,7 +46,7 @@ export default class Content extends Component<IProps,IState> {
 
     blackboard(event: React.MouseEvent<HTMLElement>){
         event.preventDefault()
-        this.props.history.push('/sinfo')
+        this.props.history.push('/blackboard')
     }
 
     comandos(event: React.MouseEvent<HTMLElement>) {

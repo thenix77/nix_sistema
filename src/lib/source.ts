@@ -1,5 +1,8 @@
+import { IBbSinfo } from '../models/bbsinfo'
+import { IEnrolamientoBB } from '../models/enrolamiento'
 import { IVLstCruzada } from '../models/listacruzada.sinfo'
 import { IVMatricula} from '../models/matricula.sinfo'
+import { ISupervisores } from '../models/zonal.sinfo'
 
 export function idAlumno(idalumno: string) {
         
@@ -51,6 +54,51 @@ export function removeDuplicatesCurso(data: IVMatricula[]) {
     return data
 }
 
+export function removeDuplicatesEstudianteBBSinfo(data: IBbSinfo[]) {
+    
+    let hash: any = {};
+    
+    data = data.filter((o:IBbSinfo) => hash[o.id_alumno] ? false : hash[o.id_alumno] = true);//hash[o.cursoid]
+
+    return data
+}
+
+export function removeDuplicatesSupBBSinfo(data: IBbSinfo[]) {
+    
+    let hash: any = {};
+    
+    data = data.filter((o:IBbSinfo) => hash[o.id_inst] ? false : hash[o.id_inst] = true);//hash[o.cursoid]
+
+    return data
+}
+
+export function removerDuplicadosSupervisores(data: ISupervisores[]) {
+    
+    let hash: any = {};
+    
+    data = data.filter((o:ISupervisores) => hash[o.display] ? false : hash[o.display] = true);//hash[o.cursoid]
+
+    return data
+}
+
+export function removeDuplicatesCursoBBSinfo(data: IBbSinfo[]) {
+    
+    let hash: any = {};
+    
+    data = data.filter((o:IBbSinfo) => hash[o.cursoid] ? false : hash[o.cursoid] = true);//hash[o.cursoid]
+
+    return data
+}
+
+export function removeDuplicatesInstBBSinfo(data: IBbSinfo[]) {
+    
+    let hash: any = {};
+    
+    data = data.filter((o:IBbSinfo) => hash[o.cursoid] ? false : hash[o.cursoid] = true);//hash[o.cursoid]
+
+    return data
+}
+
 export function removeDuplicatesInstructor(data: IVMatricula[]) {
    
     let hash: any = {};
@@ -83,4 +131,11 @@ export function Cursos(data: IVMatricula[], cursox: string) {
 export function CursosInstructor(data: IVMatricula[]){
 
     return removeDuplicatesInstructor(data)
+}
+
+export function removerDuplicadosEstudiantesBB(data: IEnrolamientoBB[]) {
+   
+    let hash: any = {};
+    data = data.filter((o: IEnrolamientoBB) => hash[o.batch_uid] ? false : hash[o.batch_uid] = true);//hash[o.cursoid]
+    return data
 }

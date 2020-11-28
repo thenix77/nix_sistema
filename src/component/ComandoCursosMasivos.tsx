@@ -1,11 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import ApiJson from '../ApiJson.json'
-import { AnalizarNrc, SupervisoresCursos } from '../lib/analisisListaCruzada'
-import { removeDuplicatesCurso } from '../lib/source'
-import { IEnrolamiento } from '../models/enrolamiento'
-import { IVMatricula } from '../models/matricula.sinfo'
+import { removerDuplicadosEstudiantesApex,removerDuplicadosCursoApex } from '../lib/enrolamientoApex.lib'
+
+import { IEnrolamientoApex, IEnrolamientoBB } from '../models/enrolamiento'
 import { ITerm } from '../models/term.bb'
-import { ICursoSupervisor, ISupervisores } from '../models/zonal.sinfo'
+import { ISupervisores } from '../models/zonal.sinfo'
+
+
 import TablaMasivaAlumno from './TablaMasivaAlumno'
 import TablaMasivaCursos from './TablaMasivaCursos'
 import TablaMasivaInstructor from './TablaMasivaInstructor'
@@ -16,19 +17,16 @@ interface IProps { }
 interface IState {
     active: boolean
     periodos: ITerm[]
-    Apexmatriculas: IVMatricula[]
     periodo: string
     nrcs: string,
     options: string,
-    enrolamiento: IEnrolamiento[]
-    supervisores: ISupervisores[]
+    matBB: IEnrolamientoBB[]
+    supervisores:ISupervisores[]
+    matApex:IEnrolamientoApex[]
 }
 
 export default class ComandoCursosMasivos extends Component<IProps, IState> {
-
-    private findNrcs: IVMatricula[] = []
-    private BBMatriculados: IEnrolamiento[] = []
-    private supervisores:ICursoSupervisor[] = []
+    private  sinDuplicadosMatApex:IEnrolamientoApex[] = []
     
     constructor(props: IProps) {
         super(props)
@@ -36,12 +34,12 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
         this.state = {
             active: false,
             periodos: [],
-            Apexmatriculas:[],
             periodo: '',
             nrcs: '',
             options: '',
-            enrolamiento: [],
-            supervisores: []
+            matBB: [],
+            supervisores: [],
+            matApex:[]
         }
 
         this.handleClick = this.handleClick.bind(this)
@@ -71,7 +69,7 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                     })
                 })
         
-         await  fetch(`${ApiJson.Api}/sinfo/matricula`,
+        await  fetch(`${ApiJson.Api}/sinfo/supervisores`,
                 {
                     method:'GET',
                     headers:{
@@ -82,55 +80,49 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                 .then((db)=> db.json())
                 .then((data)=>{
                     this.setState({
-                        Apexmatriculas: data.data
+                        supervisores: data.data
                     })
                 })
-    
+    }
 
-    await fetch(`${ApiJson.Api}/BB/Enrolamiento`,
+    async BbSinfo() {
+        
+        await fetch(`http://localhost:4000/BB/Enrolamiento/periodo/${this.state.periodo}/nrcs/${this.state.nrcs}`,
             {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'Application/json',
                     'token': localStorage.getItem('token') || ''
                 },
+                
             })
             .then((db) => db.json())
             .then((data) => {
                 this.setState({
-                    enrolamiento: data.data
+                    matBB: data.data
                 })
             })
-
-     await fetch(`${ApiJson.Api}/sinfo/zonal/supervisores`,
+       
+        await fetch(`${ApiJson.Api}/sinfo/matricula/periodo/${this.state.periodo}/nrcs/${this.state.nrcs}`,
             {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'Application/json',
                     'token': localStorage.getItem('token') || ''
                 },
+                
             })
             .then((db) => db.json())
             .then((data) => {
                 this.setState({
-                    supervisores: data.data
+                    matApex: data.data
                 })
             })
-
     }
 
     async handleSelectPeriodo({ target }: React.ChangeEvent<HTMLSelectElement>)  {
                                                         
-        this.setState({ active: true, periodo:target.value })
-
-        if (target.value === '') {
-            this.BBMatriculados = []
-            return
-        }
-
-        this.BBMatriculados = this.state.enrolamiento.filter(enr => enr.sourcedid_id === target.value)
-
-        this.setState({ active: false })                                            
+        this.setState({ periodo:target.value })
     }
 
 
@@ -138,48 +130,49 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
 
         event.preventDefault()
 
-        this.findNrcs = []
-        this.supervisores = []
-        this.BBMatriculados = []
 
         if (this.state.nrcs.length === 0) return
         if(this.state.periodo === '') return
 
-        this.setState({ active: true })
-      
+        this.setState({
+            active: true,
+            matApex: this.state.matApex.filter(s => s.pago !== 'PaganteN').filter(c => c.calificable === 'Y'),
+        })
+
+             
         switch (option) {
             case 'estudiantes':
-                this.setState({ options: 'estudiantes' })
-                this.findNrcs = this.Analizar()
-                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.role === 'S').filter(mat => mat.habilitado === 'Y')
+                this.sinDuplicadosMatApex = this.state.matApex
+                this.setState({
+                    options: 'estudiantes',
+                    matBB: this.state.matBB.filter(s => s.role === 'S')
+                })
+                
                 break
             case 'instructores':
-                this.setState({ options: 'instructores' })
-                this.findNrcs = removeDuplicatesCurso(this.Analizar())
-                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.role === 'BB_FACILITATOR').filter(mat => mat.habilitado === 'Y')
+                this.sinDuplicadosMatApex = removerDuplicadosCursoApex(this.state.matApex)
+                this.setState({
+                    options: 'instructores',
+                    matBB: this.state.matBB.filter(s => s.role === 'BB_FACILITATOR')
+                })
                 break
             case 'supervisores':
                 this.setState({ options: 'supervisores' })
-                this.findNrcs = removeDuplicatesCurso(this.Analizar())
-                this.supervisores = SupervisoresCursos(this.findNrcs, this.state.supervisores)
-                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.role === 'Sup').filter(mat => mat.habilitado === 'Y')
                 break
             case 'cursos':
                 this.setState({ options: 'cursos' })
-                this.findNrcs = removeDuplicatesCurso(this.Analizar())
-                this.BBMatriculados = this.state.enrolamiento.filter(mat => mat.habilitado === 'Y')
                 break
+            case 'play':
+                await this.BbSinfo()
+                this.setState({ options:'' })
+                
+                break;
         }
         
 
         this.setState({ active:false })
     }
 
-
-    Analizar() {
-        let NRCS = this.state.nrcs.split(',')
-        return AnalizarNrc(this.state.Apexmatriculas, NRCS)
-    }
 
   
     render() {
@@ -240,25 +233,11 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                                 <div className="col-sm-3">
                                     <div className="input-group">
                                         <button     className="btn btn-outline-secondary"
-                                                    name='usuario'
+                                                    name='play'
                                                     disabled={this.state.active}
-                                                    onClick={(event) => this.handleClick(event,'estudiantes')}
+                                                    onClick={(event) => this.handleClick(event, 'play')}
                                         >
-                                            <i className="fas fa-chalkboard-teacher"></i>
-                                        </button>
-                                        <button     className="btn btn-outline-secondary"
-                                                    name='usuario'
-                                                    disabled={this.state.active}
-                                                    onClick={(event) => this.handleClick(event,'instructores')}
-                                        >
-                                            <i className="fas fa-user-graduate"></i>
-                                        </button>
-                                        <button     className="btn btn-outline-secondary"
-                                                    name='usuario'
-                                                    disabled={this.state.active}
-                                                    onClick={(event) => this.handleClick(event, 'supervisores')}
-                                        >
-                                            <i className="fas fa-sitemap"></i>
+                                            <i className="far fa-play-circle"></i>
                                         </button>
                                         <button     className="btn btn-outline-secondary"
                                                     name='usuario'
@@ -266,6 +245,27 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                                                     onClick={(event) => this.handleClick(event, 'cursos')}
                                         >
                                             <i className="fas fa-journal-whills"></i>
+                                        </button>
+                                        <button     className="btn btn-outline-secondary"
+                                                    name='usuario'
+                                                    disabled={this.state.active}
+                                                    onClick={(event) => this.handleClick(event,'estudiantes')}
+                                        >
+                                            <i className="fas fa-users-class"></i>
+                                        </button>
+                                        <button     className="btn btn-outline-secondary"
+                                                    name='usuario'
+                                                    disabled={this.state.active}
+                                                    onClick={(event) => this.handleClick(event,'instructores')}
+                                        >
+                                            <i className="fas fa-chalkboard-teacher"></i>
+                                        </button>
+                                        <button     className="btn btn-outline-secondary"
+                                                    name='usuario'
+                                                    disabled={this.state.active}
+                                                    onClick={(event) => this.handleClick(event, 'supervisores')}
+                                        >
+                                            <i className="fas fa-sitemap"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -279,32 +279,30 @@ export default class ComandoCursosMasivos extends Component<IProps, IState> {
                     <div className="col-md-12">
                         {
                             (this.state.options === 'estudiantes') ?
-                                <TablaMasivaAlumno apexMatriculados={this.findNrcs}
-                                                   bbMatriculados={this.BBMatriculados}
+                                <TablaMasivaAlumno  matBB={this.state.matBB}
+                                                    matApex={this.sinDuplicadosMatApex}
                                 /> :
                                 <></>
                         }
                         {
                             (this.state.options === 'instructores') ?
-                                <TablaMasivaInstructor  apexMatriculados={this.findNrcs}
-                                                        bbMatriculados={this.BBMatriculados}
+                                <TablaMasivaInstructor  matBB={this.state.matBB}
+                                                        matApex={this.sinDuplicadosMatApex}
                                 /> :
                                 <></>
                         }
-                         {
+                         {/*
                             (this.state.options === 'supervisores') ?
-                                <TablaMasivaSupervisores  supervisores={this.supervisores}
-                                                          bbMatriculados={this.BBMatriculados}
+                                <TablaMasivaSupervisores bbSinfoMatriculados={this.state.bbsinfo}
+                                                         supervisores={this.state.supervisores}
                                 /> :
                                 <></>
                         }
                         {
                             (this.state.options === 'cursos') ?
-                                <TablaMasivaCursos  apexMatriculados={this.findNrcs}
-                                                    bbMatriculados={this.BBMatriculados}
-                                /> :
+                                <TablaMasivaCursos   bbSinfoMatriculados={this.state.bbsinfo}/> :
                                 <></>
-                        }
+                        */}
                     </div>
                 </div>
         </Fragment>    

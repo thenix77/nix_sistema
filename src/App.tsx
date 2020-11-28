@@ -7,6 +7,7 @@ import Aside from "./component/Aside";
 import Footer from "./component/Footer";
 import Navbar from "./component/Navbar";
 import Apex from "./pages/Apex";
+import Blackboard from "./pages/Blackboard";
 import Comandos from "./pages/Comandos";
 import Home from "./pages/Home";
 
@@ -28,6 +29,9 @@ function App() {
               <Route path='/apex' exact render={
                                             (props: RouteComponentProps) => <Apex  {...props} /> 
               } />
+              <Route path='/blackboard' exact render={
+                                            (props: RouteComponentProps) => <Blackboard  {...props} /> 
+                                            }  />
               <Route path='/comandos' exact render={
                                             (props: RouteComponentProps) => <Comandos  {...props} /> 
                                             }  />

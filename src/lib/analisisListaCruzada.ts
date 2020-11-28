@@ -44,7 +44,7 @@ export function AnalizarBBMat(BBMatriculados: IEnrolamiento[], ApexMatriculados:
     
     for (let i = 0; i < BBMatriculados.length; i++){
         ApexMatriculados.filter(apexMat => apexMat.cursoid === BBMatriculados[i].course_id &&
-                                            apexMat.id_alumno === BBMatriculados[i].student_id 
+                                            apexMat.id_alumno === BBMatriculados[i].batch_uid
                                 )
                         .map(apexMat=> listaBB.push(apexMat))
     }
@@ -74,7 +74,7 @@ export function AnalizarBBInst(BBMatriculados: IEnrolamiento[], ApexMatriculados
     
     for (let i = 0; i < BBMatriculados.length; i++){
         ApexInst.filter(apexMat =>  apexMat.cursoid === BBMatriculados[i].course_id &&
-                                    apexMat.id_inst === BBMatriculados[i].student_id 
+                                    apexMat.id_inst === BBMatriculados[i].batch_uid 
                                 )
                 .map(apexMat=> listaBB.push(apexMat))
     }

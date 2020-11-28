@@ -2,6 +2,7 @@ export interface IVMatricula {
   calificable: string;
   nrc: string;
   id_alumno: string;
+  periodo:  string
   cursoid: string;
   patron: string;
   id_inst: string;

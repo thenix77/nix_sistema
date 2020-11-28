@@ -106,7 +106,7 @@ export default class Apex extends Component<IProps, IState> {
                     })
              })
         
-        await  fetch(`${ApiJson.Api}/sinfo/listacruzada`,
+        await  fetch(`${ApiJson.Api}/BB/ListasCruzadas`,
                 {
                     method:'GET',
                     headers:{
@@ -186,14 +186,12 @@ export default class Apex extends Component<IProps, IState> {
         var cursoid = (this.newMatricula.length > 0) ? this.newMatricula[0].cursoid + ' - ' : ''
         cursoid  += (this.newMatricula.length > 0) ? this.newMatricula[0].curso  : ''
         
-        this.listaCruzada = this.state.listacruzada.filter(lc => lc.cursoid.includes(this.newMatricula[0].cursoid))
-
-        this.listaCruzada = (this.listaCruzada.length > 0) ?
-                            this.state.listacruzada.filter(lc => lc.lc_curso.includes(this.listaCruzada[0].lc_curso)) :
-                            []
-       
+        this.listaCruzada = this.state.listacruzada.filter(lc => lc.cursoid === this.newMatricula[0].cursoid)
+        
         this.listaCruzada = this.listaCruzada.length > 0? removeDuplicatesListaCruzada(this.listaCruzada):[]
-       
+        console.log(this.listaCruzada);
+        
+
         this.setState({
             select:'curso',
             cantidad: this.newMatricula.length,
@@ -292,7 +290,7 @@ export default class Apex extends Component<IProps, IState> {
                                         {   /********* Instructores ************/
                                             (this.state.select === 'curso' && this.newMatricula.length >0) ?
                                                 <>
-                                                    {
+                                                   {
                                                         this.listaCruzada.length > 0 ?
                                                             <TablaListaCruzada listaCruzada={this.listaCruzada} /> :
                                                             <></>

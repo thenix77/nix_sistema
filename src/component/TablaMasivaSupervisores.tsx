@@ -1,50 +1,75 @@
 import React, { Component, Fragment } from 'react'
-import { IEnrolamiento } from '../models/enrolamiento'
-import { ICursoSupervisor} from '../models/zonal.sinfo'
-
+import { IBbSinfo } from '../models/bbsinfo'
+import { removeDuplicatesSupBBSinfo , removerDuplicadosSupervisores} from '../lib/source'
+import { ISupervisores } from '../models/zonal.sinfo'
 
 interface IProps{
-    supervisores: ICursoSupervisor[]
-    bbMatriculados: IEnrolamiento[]
+    bbSinfoMatriculados: IBbSinfo[]
+    supervisores:ISupervisores[]
 }
 
 interface IState { }
 
 export default class TablaMasivaSupervisores extends Component<IProps,IState> {
     render() {
+        let bbSinfoMatriculados: IBbSinfo[] = []
+        bbSinfoMatriculados = removeDuplicatesSupBBSinfo(this.props.bbSinfoMatriculados)
 
-         const tbodyHtml = this.props.supervisores.map((apex: ICursoSupervisor, index: number) => {
+        
+        let tbodyHtml
+        let cursoSupervisor: ISupervisores[] = []
+        cursoSupervisor = this.props.supervisores.filter(sup => sup.zonal === bbSinfoMatriculados[0].zonal)
+        
+        bbSinfoMatriculados.filter(bsm => bsm.supregistrado === 'Y').map((c: IBbSinfo, i:number) => {
             return (
-                
-                this.props.bbMatriculados.filter(bb => bb.batch_uid === apex.correo  && bb.course_id === apex.curso).length === 0 ?
-                    <tr key={apex.supervisor + '-' + apex.curso}>
-                                <td align='center'>{apex.supervisor} </td>
-                                <td align='center'> {apex.curso}</td>
-                                <td align='center'>{apex.zonal}</td>
-                                <td>
-                                    ENROLAMIENTO_PUT-crear $token $URL_sitio courseId:{apex.curso} userName:{apex.correo} Sup
+                 tbodyHtml = cursoSupervisor.map((sup: ISupervisores, i: number) => {
+                return (
+                    <tr key={cursoSupervisor[i].First +'-' + i.toString()}>
+                            <td align='center'>{sup.zonal}</td>
+                            <td align='center'>{bbSinfoMatriculados[0].cursoid}</td>
+                            <td align='center'>{sup.First}</td>
+                            <td align='justify'>
+                                ENROLAMIENTO_PUT-crear $token $URL_sitio courseId:{c.cursoid} externalId:{sup.name} Sup
+                            </td>
+                    </tr>
+                 )
+            }) 
+             )      
+        })
+               
+           
+        
+        
+        const tbodyHtmlEnr = bbSinfoMatriculados
+            .filter(bsm => bsm.supregistrado === 'Y')
+            .map((bsm: IBbSinfo, i: number) => {
+                return (
+                    <tr  key={bsm.supregistrado +'-E-' + i.toString()}>
+                        <td align='center'>{bsm.supregistrado}</td>
+                        <td align='center'>{bsm.cursoid}</td>
+                        <td align='center'>SUPERVISOR0{(i+1).toString()}</td>
+                        <td align='center'>
+                            SUPERVISOR ENROLADO
                         </td>
                     </tr>
-                    :
-                    <Fragment key={apex.supervisor + '-' + apex.curso} >
-                        
-                    </Fragment>
-                    
-            )
-        })
+                )
+            })
+        
+        
         return (
             <Fragment>
                 <table className='table table-bordered table-striped' width='100%' style={{fontSize:'x-small'}}>
                     <thead>
                         <tr>
-                            <td width='10%' align='center'>Nrc </td>
+                            <td width='10%' align='center'>Enrolado </td>
                             <td width='15%' align='center'>Curso</td>
-                            <td width='15%' align='center'>ID estudiante</td>
-                            <td width='60%' align='center'>Script - Enrolar - Studiante</td>
+                            <td width='15%' align='center'>Sup</td>
+                            <td width='60%' align='center'>Script - Enrolar - Supervisor</td>
                         </tr>
                     </thead>
                     <tbody>
                         {tbodyHtml}
+                        {tbodyHtmlEnr}
                     </tbody>
                 </table>
                 

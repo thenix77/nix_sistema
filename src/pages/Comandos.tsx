@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import ComandoAlumno from '../component/ComandoAlumno'
+import ComandoCambioInstructor from '../component/ComandoCambioInstructor'
 import ComandoCursos from '../component/ComandoCursos'
 import ComandoCursosMasivos from '../component/ComandoCursosMasivos'
 import ComandoListaCruzada from '../component/ComandoListaCruzada'
@@ -9,7 +10,8 @@ import ComandoListaCruzada from '../component/ComandoListaCruzada'
 interface IProps extends RouteComponentProps {}
 
 interface IState {
-    select:string
+    select: string
+    titulo: string
 }
 
 
@@ -18,21 +20,23 @@ export default class Comandos extends Component<IProps, IState> {
         super(props)
 
         this.state = {
-            select:''
+            select: '',
+            titulo: ''
         }
 
         this.handleComandoAlumno = this.handleComandoAlumno.bind(this)
         this.handleComandoListaCruzada = this.handleComandoListaCruzada.bind(this)
         this.handleComandoCursos = this.handleComandoCursos.bind(this)
-
         this.handleComandoCursosMasivo = this.handleComandoCursosMasivo.bind(this)
+        this.handleComandoChangeInstructor = this.handleComandoChangeInstructor.bind(this)
     }
 
     handleComandoAlumno(event: React.MouseEvent<HTMLElement>) {
         event.preventDefault()
 
         this.setState({
-            select:'alumno'
+            select: 'alumno',
+            titulo: 'Alumno'
         })
         
     }
@@ -41,7 +45,8 @@ export default class Comandos extends Component<IProps, IState> {
         event.preventDefault()
 
         this.setState({
-            select:'listacruzada'
+            select: 'listacruzada',
+            titulo: 'Lista Cruzada'
         })
     }
 
@@ -49,7 +54,8 @@ export default class Comandos extends Component<IProps, IState> {
         event.preventDefault()
 
         this.setState({
-            select:'cursos'
+            select: 'cursos',
+            titulo: 'Cursos'
         })
     }
 
@@ -57,9 +63,21 @@ export default class Comandos extends Component<IProps, IState> {
         event.preventDefault()
 
         this.setState({
-            select: 'cursosMasivo'
+            select: 'cursosMasivo',
+            titulo: 'Cursos Masivo'
         })
     }
+
+    handleComandoChangeInstructor(event: React.MouseEvent<HTMLElement>) {
+        event.preventDefault()
+
+        this.setState({
+            select: 'cambioInstructor',
+            titulo: 'Cambio Instructor'
+        })
+    }
+
+    
 
     render() {
         return (
@@ -69,7 +87,7 @@ export default class Comandos extends Component<IProps, IState> {
                     {/* DIRECT CHAT */}
                     <div className="card direct-chat direct-chat-warning">
                         <div className="card-header">
-                            <h3 className="card-title">Crear </h3> 
+                            <h3 className="card-title">Comandos </h3> 
                             <div className="card-tools">
                                 <span   data-toggle="tooltip"
                                     title="3 New Messages"
@@ -93,7 +111,10 @@ export default class Comandos extends Component<IProps, IState> {
                             <button className="btn btn-app" onClick={this.handleComandoCursosMasivo}>
                                 <i className="fas fa-barcode"></i> Cursos Masivo
                             </button>
-                            <button  className="btn btn-app"  onClick={this.handleComandoListaCruzada}>
+                            <button  className="btn btn-app"  onClick={this.handleComandoChangeInstructor}>
+                                <i className="fas fa-exchange-alt"></i> Instructor
+                            </button>
+                            <button className="btn btn-app" onClick={this.handleComandoListaCruzada}>
                                 <i className="fas fa-tasks"></i> Lista Cruzada
                             </button>
                             <Link to="#" className="btn btn-app">
@@ -108,7 +129,7 @@ export default class Comandos extends Component<IProps, IState> {
                         <div className="card direct-chat direct-chat-warning">
                             <div className="card direct-chat direct-chat-warning">
                                 <div className="card-header">
-                                        <h3 className="card-title">Crear</h3>
+                                    <h3 className="card-title">{ this.state.titulo}</h3>
                                     <div className="card-tools">
                                        
                                         <span   data-toggle="tooltip"
@@ -135,6 +156,10 @@ export default class Comandos extends Component<IProps, IState> {
                                         }
                                         {   (this.state.select === 'cursosMasivo')?
                                                 <ComandoCursosMasivos />          :
+                                                <></>
+                                        }
+                                        {   (this.state.select === 'cambioInstructor')?
+                                                <ComandoCambioInstructor />          :
                                                 <></>
                                         }
                                         

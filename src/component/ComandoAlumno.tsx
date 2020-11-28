@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
 import { ValidarEmail, ValidarNumero, ValidarTexto } from '../lib/validation'
-
-import  { Item } from "react-switchable";
-import Sw from "react-switchable"
 import "react-switchable/dist/main.css";
 
 interface IProps {}
@@ -169,6 +166,17 @@ export default class ComandoAlumno extends Component<IProps,IState> {
                                         {this.state.validApellido && this.state.validNombre && this.state.validIdSinfo && this.state.validCorreo ?
                                         <>
                                             USUARIO_POST-Crear $token $URL_sitio {this.state.idsinfo}@senati.pe '{this.state.apellido.toUpperCase()}' '{this.state.nombre.toUpperCase()}' '{this.state.idsinfo.padStart(9, "000000000")}' '987654321' '{this.state.correo.toLowerCase()}'
+                                        </> :
+                                        <></>
+                                    }
+                                    </td>
+                                </tr>
+                                 <tr>
+                                    <td width='10%'>Crear Instructor</td>
+                                    <td width='90%'>
+                                        {this.state.validApellido && this.state.validNombre && this.state.validIdSinfo && this.state.validCorreo ?
+                                        <>
+                                            USUARIO_POST-Crear $token $URL_sitio {this.state.idsinfo} '{this.state.apellido.toUpperCase()}' '{this.state.nombre.toUpperCase()}' '{this.state.idsinfo.padStart(9, "000000000")}' '987654321' '{this.state.correo.toLowerCase()}'
                                         </> :
                                         <></>
                                     }

@@ -12,6 +12,15 @@ export default class TablaClonar extends Component<IProps, IState> {
   render() {
     return (
       <>
+        {
+          (this.props.curso.calificable === 'N') ?
+            <div className="alert alert-danger text-center" role='alert'>
+              <label>NO CALIFICABLE</label>
+            </div>
+            :
+            <></>
+        }
+        
         <table
           className="table table-bordered table-striped"
           style={{ fontSize: "x-small" }}

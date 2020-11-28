@@ -5,7 +5,6 @@ import ApiJson from '../ApiJson.json'
 import { ExcelRenderer } from 'react-excel-renderer'
 import { IBBCursosMatriculados, IVMatricula } from '../models/matricula.sinfo'
 import { AnalizarNrc } from '../lib/analisisListaCruzada'
-import TableCursos from './TablaCursos'
 import { ITutoria } from '../models/tutoria.sinfo'
 import TablaComandoAlumno from './TablaComandoAlumno'
 

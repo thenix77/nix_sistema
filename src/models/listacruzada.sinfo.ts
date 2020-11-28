@@ -4,7 +4,8 @@ export interface IVLstCruzada{
   patron:string
   lc:string
   tipo:string
-  lc_curso:string
+  lc_curso: string
+  periodo:  string
 }
 
 

@@ -3,13 +3,26 @@ export function ValidarNumero(cadena: string):boolean {
     var valoresAceptados = /^[0-9]+$/;
     
     return cadena.match(valoresAceptados) ? true : false
-      
-  
+}
+
+export function ValidarNumeroComa(cadena: string):boolean {
+    
+    var valoresAceptados = /^[0-9, ]+$/;
+    
+    return cadena.match(valoresAceptados) ? true : false
 }
 
 export function ValidarTexto(cadena: string):boolean {
     
     var valoresAceptados = /^[a-zA-Z ]+$/;
+    
+    return cadena.match(valoresAceptados) ? true : false
+      
+  
+}
+export function ValidarTextoComa(cadena: string):boolean {
+    
+    var valoresAceptados = /^[a-zA-Z, ]+$/;
     
     return cadena.match(valoresAceptados) ? true : false
       
