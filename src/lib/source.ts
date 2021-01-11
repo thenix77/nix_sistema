@@ -2,6 +2,7 @@ import { IBbSinfo } from '../models/bbsinfo'
 import { IEnrolamientoBB } from '../models/enrolamiento'
 import { IVLstCruzada } from '../models/listacruzada.sinfo'
 import { IVMatricula} from '../models/matricula.sinfo'
+import { IRetirados } from '../models/retirados'
 import { ISupervisores } from '../models/zonal.sinfo'
 
 export function idAlumno(idalumno: string) {
@@ -137,5 +138,12 @@ export function removerDuplicadosEstudiantesBB(data: IEnrolamientoBB[]) {
    
     let hash: any = {};
     data = data.filter((o: IEnrolamientoBB) => hash[o.batch_uid] ? false : hash[o.batch_uid] = true);//hash[o.cursoid]
+    return data
+}
+
+export function removerDuplicadosEstudiantesRetirados(data: IRetirados[]) {
+   
+    let hash: any = {};
+    data = data.filter((o: IRetirados) => hash[o.id_alumno] ? false : hash[o.id_alumno] = true);//hash[o.cursoid]
     return data
 }

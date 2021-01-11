@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react'
-import { IEnrolamientoBB } from '../../../models/enrolamiento'
+import { IRetirados } from '../../../models/retirados'
+
 
 interface IProps{
-    enrolamientos:IEnrolamientoBB[]
+    enrolamientos:IRetirados[]
 }
 
 interface IState{}
@@ -10,14 +11,13 @@ interface IState{}
 export default class RetiroCursos extends Component<IProps,IState> {
     render() {
 
-        const htmlBody = this.props.enrolamientos.filter(c => c.role === 'S').filter(e => e.usuariovisiblecurso === 'Y')
-            .map((user: IEnrolamientoBB, i: number) => {
+        const htmlBody = this.props.enrolamientos.map((user: IRetirados, i: number) => {
             return (
-                <tr key={user.batch_uid+'-'+user.course_id}>
-                    <td align='center'>{user.batch_uid}</td>
+                <tr key={user.id_alumno+'-'+user.course_id}>
+                    <td align='center'>{user.id_alumno}</td>
                     <td align='center'>{user.course_id}</td>
                     <td align='justify'>
-                        ENROLAMIENTO_PATCH-Visibilidad $token $URL_sitio courseId:{user.course_id}  externalId:{user.batch_uid} No
+                        ENROLAMIENTO_PATCH-Visibilidad $token $URL_sitio courseId:{user.course_id}  externalId:{user.id_alumno} No
                     </td>
                 </tr>
             )
@@ -28,9 +28,9 @@ export default class RetiroCursos extends Component<IProps,IState> {
                 <table className='table table-bordered table-striped w-100'>
                     <thead>
                         <tr className='font-weight-bold'>
-                            <td align='center' width='15%'>ID</td>
+                            <td align='center' width='15%'>Id </td>
                             <td align='center' width='25%'>Curso</td>
-                            <td align='center' width='60%'>Script - {this.props.enrolamientos.filter(c => c.role === 'S').length} </td>
+                            <td align='center' width='60%'>Script - {this.props.enrolamientos.length} </td>
                         </tr>
                     </thead>
                     <tbody style={{fontSize:'x-small'}}>

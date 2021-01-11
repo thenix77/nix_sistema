@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import ApiJson from '../../ApiJson.json'
-import { IEnrolamientoBB } from '../../models/enrolamiento'
+import { IRetirados } from '../../models/retirados'
 import { ITerm } from '../../models/term.bb'
 import RetiroBb from './tables/RetiroBb'
 import RetiroCursos from './tables/RetiroCursos'
@@ -10,7 +10,7 @@ interface IState {
     active: boolean
     periodos: ITerm[]
     periodo: string
-    enrolamientos: IEnrolamientoBB[]
+    enrolamientos: IRetirados[]
     select:string
 }
 export default class Retiros extends Component<IProps, IState> {
