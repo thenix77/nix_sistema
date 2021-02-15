@@ -31,9 +31,15 @@ export default class Content extends Component<IProps,IState> {
         this.sinfo = this.sinfo.bind(this)
         this.blackboard = this.blackboard.bind(this)
         this.comandos = this.comandos.bind(this)
+        this.tutoria = this.tutoria.bind(this)
     }
 
-    
+    async tutoria(event: React.MouseEvent<HTMLElement>){
+        event.preventDefault()
+
+        this.props.history.push('/tutoria')
+    }
+
     async sinfo(event: React.MouseEvent<HTMLElement>){
         event.preventDefault()
         
@@ -102,13 +108,25 @@ export default class Content extends Component<IProps,IState> {
            
                     <div className="row">
                         <div className="col-12 col-sm-6 col-md-3 ">
-                            <div className="info-box link-black" onClick={this.sinfo}>
-                                <span className="info-box-icon bg-info elevation-1">
+                            <div className="info-box link-black" onClick={this.tutoria}>
+                                <span className="info-box-icon bg-primary elevation-1">
                                     <i className={this.state.visible ? "fas fa-cog fa-spin" : "fas fa-cog"}>
                                     </i>
                                 </span>
 
                                 <div className="info-box-content">
+                                    <span className="info-box-text">Matriculados - Tutoria</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-12 col-sm-6 col-md-3 ">
+                            <div className="info-box link-black" >
+                                <span className="info-box-icon bg-info elevation-1">
+                                    <i className={this.state.visible ? "fas fa-cog fa-spin" : "fas fa-cog"}>
+                                    </i>
+                                </span>
+
+                                <div className="info-box-content" onClick={this.sinfo}>
                                     <span className="info-box-text">Matriculados - Apex</span>
                                     <span className="info-box-number">
                                         {this.state.visible ? 0: this.state.sinfoCantidadCurso}

@@ -6,11 +6,14 @@ import Aside from "./component/Aside";
 //import ContentHeader from "./component/Content.Header";
 import Footer from "./component/Footer";
 import Navbar from "./component/Navbar";
+
 import Apex from "./pages/Apex";
 import Blackboard from "./pages/Blackboard";
 import Comandos from "./pages/Comandos";
 import Home from "./pages/Home";
 
+import Tutoria from "./pages/Tutoria";
+import Cursos from "./pages/Cursos";
 
 
 function App() {
@@ -29,6 +32,13 @@ function App() {
               <Route path='/apex' exact render={
                                             (props: RouteComponentProps) => <Apex  {...props} /> 
               } />
+              <Route path='/tutoria' exact render={
+                                            (props: RouteComponentProps) => <Tutoria  {...props} /> 
+              } />
+              <Route path='/cursos/:idAlumno' render={
+                                            (props: RouteComponentProps) => <Cursos  {...props} /> 
+              } />
+               
               <Route path='/blackboard' exact render={
                                             (props: RouteComponentProps) => <Blackboard  {...props} /> 
                                             }  />

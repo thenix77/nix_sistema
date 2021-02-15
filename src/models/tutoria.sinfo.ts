@@ -8,6 +8,35 @@ export interface ITutoria {
   parte_periodo: string;
   cod_carrera: string;
   carrera: string;
+  clase: string;
+  id_alumno: string;
+  nombre: string;
+  condicion_acad: string;
+  condicion_pago: string;
+  tiene_pagos: string;
+  descrip_beca: string;
+  cod_retiro: string;
+  fecha_retiro: string;
+  fecha_matricula: string;
+  fecha_registro_actividad: string;
+  comentario_de_retiro: string;
+  motivo_de_retiro: string;
+  sexo: string;
+  fecha_nacimiento: string;
+  dni: string;
+  admt: string;
+}
+
+export interface IVTutoria {
+  periodo: string;
+  zonal: string;
+  campus: string;
+  tipo: string;
+  programa: string;
+  bloque: string;
+  parte_periodo: string;
+  cod_carrera: string;
+  carrera: string;
   atributo: string;
   clase: string;
   tipo_alumno: string;
@@ -22,11 +51,6 @@ export interface ITutoria {
   cod_retiro: string;
   fecha_retiro: string;
   fecha_matricula: string;
-  fecha_registro_actividad: string;
-  comentario_de_retiro: string;
-  motivo_de_retiro: string;
-  sexo: string;
-  fecha_nacimiento: string;
-  dni: string;
-  admt: string;
+  pago:string
+  
 }

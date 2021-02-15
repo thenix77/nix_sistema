@@ -22,3 +22,21 @@ export interface IBBCursosMatriculados{
     row_status: string
     sourcedid_id: string
 }
+
+export interface IVSinfoMatricula{
+  periodo: string,
+  id_alumno: string,
+  alumno: string,
+  bloque: string,
+  carrera: string, 
+  nrc: string,
+  curso: string,
+  czonal: string 
+  ccampus: string ,
+  id_inst: string,
+  instructor: string,
+  patron: string,
+  id_curso: string,
+  tipo: string,
+  calificable: string
+}

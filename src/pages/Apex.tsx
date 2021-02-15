@@ -2,66 +2,52 @@ import React, { Component, Fragment } from 'react'
 import { Link } from 'react-router-dom'
 
 import ApiJson from '../ApiJson.json'
-import TablaAlumnos from '../component/TablaAlumnos'
-import TablaClonar from '../component/TablaClonar'
-import TablaCursos from '../component/TablaCursos'
-import TablaInstructor from '../component/TablaInstructor'
-import TablaListaCruzada from '../component/TablaListaCruzada'
-import TableZonal from '../component/TableZonal'
+import TablaCursoEnrolamientoAlumno from '../component/Sinfo/TablaCursoEnrolamientoAlumno'
+import '../component/css/app.css'
+
 //import TableZonal from '../component/TableZonal'
-import { AlumnoCurso, Cursos ,CursosInstructor, removeDuplicatesListaCruzada} from '../lib/source'
-import { IVLstCruzada } from '../models/listacruzada.sinfo'
-import { IVMatricula } from '../models/matricula.sinfo'
-import { ITutoria} from '../models/tutoria.sinfo'
-import { IZonal } from '../models/zonal.sinfo'
+import {  idAlumno as idSinfo } from '../lib/source'
+import { IVInstEnrolamiento,IVSEnrolamiento } from '../models/enrolamiento'
+import { ISupervisores } from '../models/zonal.sinfo'
+import TablaCursosCrear from '../component/Sinfo/TablaCursosCrear'
+import TablaCursoEnrolamientoCurso from '../component/Sinfo/TablaCursoEnrolamientoCurso'
+import TablaInstructorEnrolamiento from '../component/Sinfo/TablaInstructorEnrolamiento'
 
 interface IState{
     activar:boolean
-    matricula: IVMatricula[]
-    tutoria: ITutoria[]
-    zonal: IZonal[]
-    listacruzada:IVLstCruzada[]
+    enrolamiento: IVSEnrolamiento[]
+    supervisores:ISupervisores[]
+    instenrolamiento: IVInstEnrolamiento[]   
     dato: string
-    cantidad: number
-    select: string
-    titulo:string
+    titulo: string
 }
 
 interface IProps{}
 
 export default class Apex extends Component<IProps, IState> {
 
-    private newMatricula: IVMatricula[]  = []
-    private newInstructor: IVMatricula[] = []
-    private listaCruzada: IVLstCruzada[] = []
- 
     constructor(props: IProps) {
         super(props)
 
         this.state = {
             activar: false,
-            matricula: [],
-            tutoria: [],
-            zonal: [],
-            listacruzada:[],
+            enrolamiento: [],
+            supervisores: [],
+            instenrolamiento:[],
             dato: '',
-            cantidad: 0,
-            select: '',
             titulo: ''
             
         }
 
+        this.handleConsultaIdAlumno = this.handleConsultaIdAlumno.bind(this)
         this.handleAlumno = this.handleAlumno.bind(this)
-        this.handleCurso = this.handleCurso.bind(this)
+        this.handleNrc = this.handleNrc.bind(this)
+        this.handleInstructor = this.handleInstructor.bind(this)
+        this.handleConsultaInstructor = this.handleConsultaInstructor.bind(this)
     }
-   
+
     async componentDidMount() {
-
-        this.setState({
-            activar:true
-        })
-
-        await  fetch(`${ApiJson.Api}/sinfo/matricula`,
+        await  fetch(`${ApiJson.Api}/sinfo/supervisores`,
                 {
                     method:'GET',
                     headers:{
@@ -72,11 +58,18 @@ export default class Apex extends Component<IProps, IState> {
                 .then((db)=> db.json())
                 .then((data)=>{
                     this.setState({
-                        matricula: data.data
+                        supervisores:data.data
                     })
                 })
+    }
+   
+    async handleConsultaIdAlumno(idAlumno:string) {
+
+        this.setState({
+            activar:true
+        })
         
-        await  fetch(`${ApiJson.Api}/sinfo/tutoria`,
+        await  fetch(`${ApiJson.Api}/sinfo/enrolamiento/idalumno/${idSinfo(idAlumno)}`,
                 {
                     method:'GET',
                     headers:{
@@ -85,123 +78,147 @@ export default class Apex extends Component<IProps, IState> {
                     }
                 })
                 .then((db)=> db.json())
-             .then((data) => {
-                    this.setState({
-                        tutoria: data.data
-                    })
-             })
-        
-        await  fetch(`${ApiJson.Api}/sinfo/zonal`,
-                {
-                    method:'GET',
-                    headers:{
-                        'Content-Type':'Application/json',
-                        'token':localStorage.getItem('token') || ''
-                    }
-                })
-                .then((db)=> db.json())
-             .then((data) => {
-                    this.setState({
-                        zonal: data.data
-                    })
-             })
-        
-        await  fetch(`${ApiJson.Api}/BB/ListasCruzadas`,
-                {
-                    method:'GET',
-                    headers:{
-                        'Content-Type':'Application/json',
-                        'token':localStorage.getItem('token') || ''
-                    }
-                })
-                .then((db)=> db.json())
-             .then((data) => {
-                    this.setState({
-                        listacruzada: data.data
+                .then((data) => {
+                     this.setState({
+                        enrolamiento: data.data
                     })
                 })
-        
+                       
         this.setState({
             activar:false
         })
     }
 
-    handleAlumno(event: React.MouseEvent<HTMLElement>) {
-        event.preventDefault()
+    async handleConsultaNrc(nrc:string) {
 
         this.setState({
-            cantidad: 0,
-            titulo: '',
-            dato: '',
+            activar:true
         })
+        
+        await  fetch(`${ApiJson.Api}/sinfo/enrolamiento/nrc/${nrc}`,
+                {
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'Application/json',
+                        'token':localStorage.getItem('token') || ''
+                    }
+                })
+                .then((db)=> db.json())
+                .then((data) => {
+                     this.setState({
+                        enrolamiento: data.data
+                    })
+                })
+                       
+        this.setState({
+            activar:false
+        })
+    }
 
-        this.newMatricula  = []
+    async handleConsultaInstructor(nrc:string) {
+        this.setState({
+            activar:true
+        })
+        
+        await  fetch(`${ApiJson.Api}/sinfo/enrolamiento/instructor/${nrc}`,
+                {
+                    method:'GET',
+                    headers:{
+                        'Content-Type':'Application/json',
+                        'token':localStorage.getItem('token') || ''
+                    }
+                })
+                .then((db)=> db.json())
+                .then((data) => {
+                     this.setState({
+                        instenrolamiento: data.data
+                    })
+                })
+                       
+        this.setState({
+            activar:false
+        })
+    }
 
-        if (this.state.activar) return 
-
+    async handleAlumno() {
+        
         if (this.state.dato === '') return
         
-        this.newMatricula = AlumnoCurso(this.state.matricula, this.state.dato.trim())
+        this.setState({
+            activar: true,
+            enrolamiento:[]
+        })
 
-        const idalumno =    this.newMatricula.length !== 0 ? 
-                            this.newMatricula[0].id_alumno :
-                            ''
 
-        const alumnoNombre = this.newMatricula.length !== 0 ?   
-                              ' - ' + this.state.tutoria.filter(tutor => tutor.id_alumno.includes(this.newMatricula[0].id_alumno))[0].nombre :
-                                ''
+        await this.handleConsultaIdAlumno(this.state.dato.trim())
+
+        if (this.state.enrolamiento.length === 0) {
+            this.setState({
+                activar: false,
+                dato:''
+            }) 
+            return
+        }
+
+        this.setState({
+            activar: false,
+            titulo: 'Alumno',
+            dato:''
+        })
+    }
+
+    async handleNrc() {
+        
+        if (this.state.dato === '') return
         
         this.setState({
-            select:'alumno',
-            cantidad: this.newMatricula.length,
-            titulo: ' - '+ idalumno + alumnoNombre,
+            activar: true,
+            enrolamiento:[]
         })
+
+        await this.handleConsultaNrc(this.state.dato.trim())
+
+        if (this.state.enrolamiento.length === 0) {
+            this.setState({
+                activar: false,
+                dato:''
+            }) 
+            return
+        }
+
+        this.setState({
+            activar: false,
+            titulo: 'Nrc',
+            dato:''
+        })
+
+    }
+
+    async handleInstructor() {
+        if (this.state.dato === '') return
+        
+        this.setState({
+            activar: true,
+            enrolamiento:[]
+        })
+
+        await this.handleConsultaInstructor(this.state.dato.trim())
+
+        if (this.state.instenrolamiento.length === 0) {
+            this.setState({
+                activar: false,
+                dato:''
+            }) 
+            return
+        }
+
+        this.setState({
+            activar: false,
+            titulo: 'Instructor',
+            dato:''
+        })
+    }
     
-        console.log(this.newMatricula)
-    }
-
-    handleCurso(event: React.MouseEvent<HTMLElement>) {
-        event.preventDefault()
-
-        this.setState({
-            cantidad:0,
-            dato: '',
-            titulo:''
-        })
-        
-        this.newMatricula = []
-        this.newInstructor = []
-        this.listaCruzada = []
-
-        if (this.state.activar) return 
-
-        if (this.state.dato === '') return
-
-        this.newMatricula = Cursos(this.state.matricula, this.state.dato.trim())
-
-        if (this.newMatricula.length === 0) return
-
-        this.newInstructor = CursosInstructor(this.newMatricula)
-
-        var cursoid = (this.newMatricula.length > 0) ? this.newMatricula[0].cursoid + ' - ' : ''
-        cursoid  += (this.newMatricula.length > 0) ? this.newMatricula[0].curso  : ''
-        
-        this.listaCruzada = this.state.listacruzada.filter(lc => lc.cursoid === this.newMatricula[0].cursoid)
-        
-        this.listaCruzada = this.listaCruzada.length > 0? removeDuplicatesListaCruzada(this.listaCruzada):[]
-        console.log(this.listaCruzada);
-        
-
-        this.setState({
-            select:'curso',
-            cantidad: this.newMatricula.length,
-            titulo: ' - ' +cursoid,
-        })
-
-    }
-
-
-
     render() {
         return (
             <Fragment>
@@ -210,13 +227,13 @@ export default class Apex extends Component<IProps, IState> {
                     {/* DIRECT CHAT */}
                     <div className="card direct-chat direct-chat-warning">
                         <div className="card-header">
-                            <h3 className="card-title">Apex </h3> 
+                            <h3 className="card-title">Scripts </h3> 
                             <div className="card-tools">
                                 Registros:
                                 <span   data-toggle="tooltip"
                                     title="3 New Messages"
                                     className="badge badge-warning">
-                                    {this.state.activar? <i className="fas fa-yin-yang fa-spin"></i> :this.state.matricula?.length}
+                                    {this.state.activar? <i className="fas fa-yin-yang fa-spin"></i> : this.state.enrolamiento.length}
                                 </span>
                                 <button type="button" className="btn btn-tool" data-card-widget="collapse"><i className="fas fa-minus" />
                                 </button>
@@ -231,14 +248,14 @@ export default class Apex extends Component<IProps, IState> {
                                 <span className="badge bg-primary">{localStorage.getItem('cantidadAplexAlumno')}</span>
                                 <i className="fas fa-users"></i> Alumno
                             </button>
-                             <button className="btn btn-app" onClick={this.handleCurso}>
+                             <button className="btn btn-app" onClick={this.handleNrc}>
                                 <span className="badge bg-success">{ localStorage.getItem('cantidadAplexCursos')}</span>
-                                <i className="fas fa-barcode"></i> Cursos 
+                                <i className="fas fa-barcode"></i> Nrc
                             </button>
-                            <Link to="#" className="btn btn-app">
+                            <button className="btn btn-app" onClick={this.handleInstructor}>
                                 <i className="fas fa-chalkboard-teacher"></i> Instructor
-                            </Link>
-                            <Link to="#" className="btn btn-app">
+                            </button>
+                            <Link to="/tutoria" className="btn btn-app">
                                 <i className="fas fa-journal-whills"></i> Tutoria
                             </Link>
                         </div>
@@ -275,36 +292,43 @@ export default class Apex extends Component<IProps, IState> {
                                             className="badge badge-warning">
                                             {this.state.activar ?
                                                 <i className="fas fa-yin-yang fa-spin"></i> :
-                                                this.state.cantidad}
+                                                this.state.enrolamiento.length}
                                     </span>
                                     <button type="button" className="btn btn-tool" data-card-widget="collapse"><i className="fas fa-minus" />
                                     </button>
                                 </div>
                             </div>
                                 <div className="card-body " style={{ margin: "10px" }} > 
-                                    <div style={{width:'100%'}}>
-                                        {   (this.state.select === 'alumno' && this.newMatricula.length !== 0)?
-                                            <TablaCursos cursos={this.newMatricula} />  :
-                                            <></>
+                                    <div style={{ width: '100%' }}>
+                                        {
+                                            this.state.activar ?
+                                                <div className='reload' >
+                                                    <img src={'/dist/img/reload.gif'}  alt=""/>
+                                                </div>
+                                            :
+                                                ''
                                         }
-                                        {   /********* Instructores ************/
-                                            (this.state.select === 'curso' && this.newMatricula.length >0) ?
-                                                <>
-                                                   {
-                                                        this.listaCruzada.length > 0 ?
-                                                            <TablaListaCruzada listaCruzada={this.listaCruzada} /> :
-                                                            <></>
-                                                    }
-                                                    <TablaClonar curso={this.newMatricula[0]} />
-                                                    <TablaInstructor cursos={this.newInstructor} /> 
-                                                    <TableZonal zonal={this.state.zonal} curso={this.newMatricula[0]} />
-                                                    <TablaAlumnos cursos={this.newMatricula} tutoria={this.state.tutoria} /> 
-                                                    
-                                                </>
-                                                :
-                                            <></>
+                                        {/** Enrolamiento Alumno */}
+                                        {(this.state.titulo === 'Alumno' && this.state.enrolamiento.length !== 0) ?
+                                            <TablaCursoEnrolamientoAlumno enrolamiento={this.state.enrolamiento}  />
+                                            :
+                                            ''
                                         }
-                                        
+                                        {(this.state.titulo === 'Nrc' && this.state.enrolamiento.length !== 0) ?
+                                            <>
+                                                <TablaCursosCrear enrolamiento={this.state.enrolamiento} />
+                                                <TablaCursoEnrolamientoCurso enrolamiento={this.state.enrolamiento} />
+                                            </>
+                                            :
+                                            ''
+                                        }
+                                        {(this.state.titulo === 'Instructor' && this.state.instenrolamiento.length !== 0) ?
+                                            <>
+                                                <TablaInstructorEnrolamiento enrolamiento={this.state.instenrolamiento} />
+                                            </>
+                                            :
+                                            ''
+                                        }
                                     </div>
                                 </div>    
                             </div>

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react'
-import { removeDuplicatesInstBBSinfo } from '../lib/source'
 import { IEnrolamientoApex, IEnrolamientoBB } from '../models/enrolamiento'
 
 
@@ -39,14 +38,14 @@ export default class TablaMasivaInstructor extends Component<IProps,IState> {
         const tbodyHtmlEnr = this.props.matBB.map((bsm: IEnrolamientoBB, i: number) => {
                 return (
                     <tr key={bsm.batch_uid+'-E-'+i.toString()}>
-                        <td align='center'>{bsm.usuariovisiblecurso}</td>
+                        <td align='center'>{bsm.usuariovisible}</td>
                         <td align='center'>{bsm.course_id}</td>
                         <td align='center'>{bsm.batch_uid}</td>
                         <td align='center'>
                             {(bsm.batch_uid === '') ?
                                 <span>SIN INSTRUCTOR</span>
                                 :
-                                <span>INSTRUCTOR ENROLADO - {bsm.usuario}</span>
+                                <span>INSTRUCTOR ENROLADO - {bsm.course_id}</span>
 
                             }
                         </td>   

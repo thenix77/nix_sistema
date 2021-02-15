@@ -63,14 +63,12 @@ export function AnalizarBBMat(BBMatriculados: IEnrolamiento[], ApexMatriculados:
 }
 
 export function AnalizarBBInst(BBMatriculados: IEnrolamiento[], ApexMatriculados: IVMatricula[]) {
-    
+  /*  
     let listaBB: IVMatricula[] = []
        
     const listaCursos:IVMatricula[] = removeDuplicatesCurso(ApexMatriculados)
     const ApexInst:IVMatricula[] = listaCursos.filter(lst => lst.id_inst !== '')
 
-    console.log('/****Apex***/')
-    console.log(ApexInst)
     
     for (let i = 0; i < BBMatriculados.length; i++){
         ApexInst.filter(apexMat =>  apexMat.cursoid === BBMatriculados[i].course_id &&
@@ -79,9 +77,7 @@ export function AnalizarBBInst(BBMatriculados: IEnrolamiento[], ApexMatriculados
                 .map(apexMat=> listaBB.push(apexMat))
     }
 
-    console.log('/*****BB*****/')
-    console.log(listaBB)
-
+  
     let index:number =0
     for (let j = 0; j < listaBB.length; j++) {
         index = ApexInst.indexOf(listaBB[j])
@@ -90,7 +86,7 @@ export function AnalizarBBInst(BBMatriculados: IEnrolamiento[], ApexMatriculados
     }
 
     return  ApexInst
-    
+ */   
 }
 
 export function SupervisoresCursos(findNrcs: IVMatricula[], Supervisores: ISupervisores[]) {

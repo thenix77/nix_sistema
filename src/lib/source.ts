@@ -1,7 +1,7 @@
 import { IBbSinfo } from '../models/bbsinfo'
 import { IEnrolamientoBB } from '../models/enrolamiento'
 import { IVLstCruzada } from '../models/listacruzada.sinfo'
-import { IVMatricula} from '../models/matricula.sinfo'
+import { IVMatricula, IVSinfoMatricula} from '../models/matricula.sinfo'
 import { IRetirados } from '../models/retirados'
 import { ISupervisores } from '../models/zonal.sinfo'
 
@@ -46,11 +46,11 @@ export function removeDuplicatesListaCruzada(data: IVLstCruzada[]) {
     return data
 }
  
-export function removeDuplicatesCurso(data: IVMatricula[]) {
+export function removeDuplicatesCurso(data: IVSinfoMatricula[]) {
     
     let hash: any = {};
     
-    data = data.filter((o:IVMatricula) => hash[o.cursoid] ? false : hash[o.cursoid] = true);//hash[o.cursoid]
+    data = data.filter((o:IVSinfoMatricula) => hash[o.id_curso] ? false : hash[o.id_curso] = true);//hash[o.cursoid]
 
     return data
 }
@@ -108,9 +108,9 @@ export function removeDuplicatesInstructor(data: IVMatricula[]) {
 }
 
 
-export function AlumnoCurso(data: IVMatricula[], idalumno: string) {
+export function AlumnoCurso(data: IVSinfoMatricula[], idalumno: string) {
     
-    let cursos = data.filter(alumno => alumno.id_alumno.includes(idAlumno(idalumno)))
+    let cursos = data.filter(alumno => alumno.id_alumno === idAlumno(idalumno))
     return removeDuplicatesCurso(cursos)
 }
 

@@ -13,7 +13,7 @@ export default class TableComandoChangeInstructor extends Component<IProps> {
         const tbodyHtml = this.props.enrolamiento.filter(enr => enr.batch_uid !== '').map((enr: IEnrolamientoBB, index: number) => {
             return (
                     <tr key={enr.batch_uid + '-' + index.toString()} >
-                        <td align='center'>{enr.useractivobb}</td>
+                        <td align='center'>{enr.cursocerrado}</td>
                         <td align='center'>{enr.batch_uid}</td>
                         <td align='center'>{enr.course_id}</td>
                         <td align='justify'>
