@@ -34,3 +34,4 @@ export function ValidarEmail(cadena: string):boolean {
     
        return emailRegex.test(cadena)? true : false
 }
+

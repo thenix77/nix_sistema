@@ -7,13 +7,13 @@ import Aside from "./component/Aside";
 import Footer from "./component/Footer";
 import Navbar from "./component/Navbar";
 
-import Apex from "./pages/Apex";
-import Blackboard from "./pages/Blackboard";
-import Comandos from "./pages/Comandos";
 import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 
 import Tutoria from "./pages/Tutoria";
-import Cursos from "./pages/Cursos";
+import Apex from "./pages/Apex";
+import Blackboard from "./pages/Blackboard";
+
 
 
 function App() {
@@ -29,22 +29,23 @@ function App() {
               <Route path='/' exact render={
                                             (props: RouteComponentProps) => <Home  {...props} /> 
               } />
-              <Route path='/apex' exact render={
+
+              <Route path='/dashboard/:periodo' exact render={
+                                            (props: RouteComponentProps) => <Dashboard {...props} /> 
+              } />
+
+              <Route path='/blackboard/:periodo' exact render={
+                                                    (props: RouteComponentProps) => <Blackboard  {...props} /> 
+                      } />
+
+              {/*****/}
+              <Route path='/apex/:periodo' exact render={
                                             (props: RouteComponentProps) => <Apex  {...props} /> 
               } />
-              <Route path='/tutoria' exact render={
+              <Route path='/tutoria/:periodo' exact render={
                                             (props: RouteComponentProps) => <Tutoria  {...props} /> 
               } />
-              <Route path='/cursos/:idAlumno' render={
-                                            (props: RouteComponentProps) => <Cursos  {...props} /> 
-              } />
-               
-              <Route path='/blackboard' exact render={
-                                            (props: RouteComponentProps) => <Blackboard  {...props} /> 
-                                            }  />
-              <Route path='/comandos' exact render={
-                                            (props: RouteComponentProps) => <Comandos  {...props} /> 
-                                            }  />
+             
             </Sw>
           </div>
         </section>

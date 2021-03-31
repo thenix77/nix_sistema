@@ -1,13 +1,10 @@
-import { IBbSinfo } from '../models/bbsinfo'
-import { IEnrolamientoBB } from '../models/enrolamiento'
-import { IVLstCruzada } from '../models/listacruzada.sinfo'
-import { IVMatricula, IVSinfoMatricula} from '../models/matricula.sinfo'
-import { IRetirados } from '../models/retirados'
-import { ISupervisores } from '../models/zonal.sinfo'
 
 export function idAlumno(idalumno: string) {
         
         let temp = ''
+
+        idalumno = idalumno.replace(' ', '')
+    
         
         const cant = idalumno.length
         const cantidadCeros = 9 - cant
@@ -19,6 +16,29 @@ export function idAlumno(idalumno: string) {
        return temp + idalumno
 }
 
+export function parseIdAlumno(idalumnos:string):string{
+    
+    let values:string[] = []
+    let newIdAlumnos = idalumnos.split(',')
+    
+    var setvs = (cadena:string[]) =>  cadena.map((c) => values.push(idAlumno(c)))
+    setvs(newIdAlumnos)
+    
+    return values.join()
+}
+
+export function parseNrc(nrc:string):string{
+    
+    let values:string[] = []
+    let newNrc = nrc.split(',')
+    
+    var setvs = (cadena:string[]) =>  cadena.map((c) => values.push(c.trim()))
+    setvs(newNrc)
+    
+    return values.join()
+}
+
+/*
 export function removeDuplicatesEstudiante(data: IVMatricula[]) {
     
     let hash: any = {};
@@ -27,123 +47,4 @@ export function removeDuplicatesEstudiante(data: IVMatricula[]) {
 
     return data
 }
-
-export function removeDuplicatesCursoEstudiante(data: IVMatricula[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:IVMatricula) => hash[o.id_alumno && o.cursoid] ? false : hash[o.id_alumno && o.cursoid] = true);//hash[o.cursoid]
-
-    return data
-}
-
-export function removeDuplicatesListaCruzada(data: IVLstCruzada[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:IVLstCruzada) => hash[o.cursoid] ? false : hash[o.cursoid] = true);//hash[o.cursoid]
-
-    return data
-}
- 
-export function removeDuplicatesCurso(data: IVSinfoMatricula[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:IVSinfoMatricula) => hash[o.id_curso] ? false : hash[o.id_curso] = true);//hash[o.cursoid]
-
-    return data
-}
-
-export function removeDuplicatesEstudianteBBSinfo(data: IBbSinfo[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:IBbSinfo) => hash[o.id_alumno] ? false : hash[o.id_alumno] = true);//hash[o.cursoid]
-
-    return data
-}
-
-export function removeDuplicatesSupBBSinfo(data: IBbSinfo[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:IBbSinfo) => hash[o.id_inst] ? false : hash[o.id_inst] = true);//hash[o.cursoid]
-
-    return data
-}
-
-export function removerDuplicadosSupervisores(data: ISupervisores[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:ISupervisores) => hash[o.display] ? false : hash[o.display] = true);//hash[o.cursoid]
-
-    return data
-}
-
-export function removeDuplicatesCursoBBSinfo(data: IBbSinfo[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:IBbSinfo) => hash[o.cursoid] ? false : hash[o.cursoid] = true);//hash[o.cursoid]
-
-    return data
-}
-
-export function removeDuplicatesInstBBSinfo(data: IBbSinfo[]) {
-    
-    let hash: any = {};
-    
-    data = data.filter((o:IBbSinfo) => hash[o.cursoid] ? false : hash[o.cursoid] = true);//hash[o.cursoid]
-
-    return data
-}
-
-export function removeDuplicatesInstructor(data: IVMatricula[]) {
-   
-    let hash: any = {};
-    data = data.filter((o: IVMatricula) => hash[o.id_inst] ? false : hash[o.id_inst] = true);//hash[o.cursoid]
-    return data
-}
-
-
-export function AlumnoCurso(data: IVSinfoMatricula[], idalumno: string) {
-    
-    let cursos = data.filter(alumno => alumno.id_alumno === idAlumno(idalumno))
-    return removeDuplicatesCurso(cursos)
-}
-
-export function AlumnoCorreo(idalumno: string) {
-    
-    
-    return idalumno.replace(/\b(0(?!\b))+/g, "")+'@senati.pe'
-}
-
-
-export function Cursos(data: IVMatricula[], cursox: string) {
-    
-    let newData = data.filter(curso => curso.cursoid.includes(cursox.toUpperCase()))
-    newData = removeDuplicatesEstudiante(newData)
-    
-      return newData
-}
-
-export function CursosInstructor(data: IVMatricula[]){
-
-    return removeDuplicatesInstructor(data)
-}
-
-export function removerDuplicadosEstudiantesBB(data: IEnrolamientoBB[]) {
-   
-    let hash: any = {};
-    data = data.filter((o: IEnrolamientoBB) => hash[o.batch_uid] ? false : hash[o.batch_uid] = true);//hash[o.cursoid]
-    return data
-}
-
-export function removerDuplicadosEstudiantesRetirados(data: IRetirados[]) {
-   
-    let hash: any = {};
-    data = data.filter((o: IRetirados) => hash[o.id_alumno] ? false : hash[o.id_alumno] = true);//hash[o.cursoid]
-    return data
-}
+*/
