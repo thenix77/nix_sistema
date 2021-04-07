@@ -2,6 +2,7 @@ export interface IPublicCurso{
     pk1:string
     periodo: string
     zonal: string
+    zonal_pk1:number
     campus: string
     parte_periodo:string
     nrc:string

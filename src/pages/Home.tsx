@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Link, RouteComponentProps } from 'react-router-dom'
 import ApiJson from '../ApiJson.json'
-import { ISinfoPeriodo } from '../models/sinfo/periodo.model'
+import { ISinfoPeriodo } from '../models/apex/periodo.model'
 
 
 interface IProps extends RouteComponentProps{

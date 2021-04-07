@@ -26,7 +26,7 @@ export default class Dashboard extends Component<IProps,IState> {
 
         this.sinfo = this.sinfo.bind(this)
         this.blackboard = this.blackboard.bind(this)
-        this.comandos = this.comandos.bind(this)
+        this.Reportes = this.Reportes.bind(this)
         this.tutoria = this.tutoria.bind(this)
     }
 
@@ -56,10 +56,12 @@ export default class Dashboard extends Component<IProps,IState> {
         this.props.history.push(url)
     }
 
-    comandos(event: React.MouseEvent<HTMLElement>) {
+    Reportes(event: React.MouseEvent<HTMLElement>) {
         event.preventDefault()
         if (this.state.activar) return
-        this.props.history.push('/comandos')
+        
+        const url = '/Reportes/' + this.state.periodo
+        this.props.history.push(url)
     }
 
 
@@ -121,14 +123,13 @@ export default class Dashboard extends Component<IProps,IState> {
                                         </div>
                                     </div>
                                     <div className="col-12 col-sm-6 col-md-3 ">
-                                        <div className="info-box link-black" onClick={this.comandos}>
+                                        <div className="info-box link-black" onClick={this.Reportes}>
                                     <span className="info-box-icon bg-purple elevation-1">
                                         <i className={this.state.activar ? "fas fa-cog fa-spin" : "fas fa-cog"}></i></span>
-
                                             <div className="info-box-content">
-                                                <span className="info-box-text">Comandos Directos</span>
+                                                <span className="info-box-text"><i className="fad fa-analytics"></i> Reportes</span>
                                                 <span className="info-box-number">
-                                                    <small> Comandos Directos</small>
+                                                    <small> graficas</small>
                                                 </span>
                                             </div>
                                         </div>

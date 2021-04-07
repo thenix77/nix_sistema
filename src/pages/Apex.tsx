@@ -13,6 +13,8 @@ import { IPublicAlumno } from '../models/public/alumnos.model'
 import TablaApexCurso from '../component/Apex/TablaApexCurso'
 import TablaApexEnrolamiento from '../component/Apex/TableApexEnrolamiento'
 import { ISupervisores } from '../models/public/supervisores'
+import TablaApexAlumno from '../component/Apex/TablaApexAlumno'
+import TablaApexInstructor from '../component/Apex/TablaApexInstructor'
 
 interface IProps extends RouteComponentProps{
 
@@ -57,7 +59,7 @@ export default class Apex extends Component<IProps,IState> {
     }
 
     async componentDidMount(){
-        await  fetch(`${ApiJson.Api}/sinfo/supervisores`,
+        await  fetch(`${ApiJson.Utda}/public/supervisores`,
                 {
                     method:'GET',
                     headers:{
@@ -73,8 +75,8 @@ export default class Apex extends Component<IProps,IState> {
                 }) 
     }
 
-    async hanbleConsultaSinfoAlumno(idAlumno:string) {
-        await  fetch(`${ApiJson.Api}/public/alumnos/${this.state.periodo}/alumno/${idAlumno}`,
+    async hanbleConsultaAlumno(idAlumno:string) {
+        await  fetch(`${ApiJson.Utda}/public/alumnos/${this.state.periodo}/alumno/${idAlumno}`,
                 {
                     method:'GET',
                     headers:{
@@ -90,8 +92,8 @@ export default class Apex extends Component<IProps,IState> {
                 }) 
     }
 
-    async hanbleConsultaSinfoEnrolamiento(nrc:string) {
-        await  fetch(`${ApiJson.Api}/public/alumnos/${this.state.periodo}/nrc/${nrc}`,
+    async hanbleConsultaEnrolamiento(nrc:string) {
+        await  fetch(`${ApiJson.Utda}/public/alumnos/${this.state.periodo}/nrc/${nrc}`,
                 {
                     method:'GET',
                     headers:{
@@ -108,7 +110,7 @@ export default class Apex extends Component<IProps,IState> {
     }
 
     async handleConsultaNrc(nrc:string) {
-         await  fetch(`${ApiJson.Api}/public/cursos/${this.state.periodo}/nrc/${nrc}`,
+         await  fetch(`${ApiJson.Utda}/public/cursos/${this.state.periodo}/nrc/${nrc}`,
                 {
                     method:'GET',
                     headers:{
@@ -125,7 +127,7 @@ export default class Apex extends Component<IProps,IState> {
     }
 
     async handleConsultaInstructor(nrc:string) {
-        await  fetch(`${ApiJson.Api}/public/instructores/${this.state.periodo}/nrc/${nrc}`,
+        await  fetch(`${ApiJson.Utda}/public/instructores/${this.state.periodo}/nrc/${nrc}`,
                {
                    method:'GET',
                    headers:{
@@ -152,7 +154,7 @@ export default class Apex extends Component<IProps,IState> {
             titulo:''
         })
 
-        await this.hanbleConsultaSinfoAlumno(parseIdAlumno(this.state.dato))
+        await this.hanbleConsultaAlumno(parseIdAlumno(this.state.dato))
 
         if (this.state.enrolamientos.length === 0) {
             this.setState({
@@ -207,7 +209,7 @@ export default class Apex extends Component<IProps,IState> {
             titulo:''
         })
 
-        await this.hanbleConsultaSinfoEnrolamiento(parseNrc(this.state.dato))
+        await this.hanbleConsultaEnrolamiento(parseNrc(this.state.dato))
 
         
         if (this.state.enrolamientos.length === 0) {
@@ -369,7 +371,7 @@ export default class Apex extends Component<IProps,IState> {
                                         {
                                             (this.state.enrolamientos.length > 0 && this.state.titulo === 'Alumnos') ? 
                                                 <Fragment>
-                                                    <TablaApexEnrolamiento enrolamientos={this.state.enrolamientos} /> 
+                                                    <TablaApexAlumno enrolamientos={this.state.enrolamientos} /> 
                                                 </Fragment>
                                             :
                                                 ''
@@ -390,13 +392,13 @@ export default class Apex extends Component<IProps,IState> {
                                             :
                                                 ''
                                         }
-                                        {/*
+                                        {
                                             (this.state.instructores.length > 0 && this.state.titulo==='Instructores') ? 
                                                 <Fragment>
-                                                    <TablaTutorialInstructor  instructores={this.state.instructores} />
+                                                    <TablaApexInstructor  instructores={this.state.instructores} />
                                                 </Fragment>
                                             :
-                                                ''*/
+                                                ''
                                         }
                                     </div>
                                 </div>    

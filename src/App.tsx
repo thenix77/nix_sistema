@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Tutoria from "./pages/Tutoria";
 import Apex from "./pages/Apex";
 import Blackboard from "./pages/Blackboard";
+import Reportes from "./pages/Reportes";
 
 
 
@@ -45,7 +46,9 @@ function App() {
               <Route path='/tutoria/:periodo' exact render={
                                             (props: RouteComponentProps) => <Tutoria  {...props} /> 
               } />
-             
+              <Route path='/Reportes/:periodo' exact render={
+                                            (props: RouteComponentProps) => <Reportes  {...props} /> 
+              } />
             </Sw>
           </div>
         </section>

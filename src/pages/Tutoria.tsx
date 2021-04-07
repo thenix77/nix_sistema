@@ -329,17 +329,17 @@ export default class Tutoria extends Component<IProps,IState> {
                     </div>
                 </div>
                 <div className="row justify-content-md-center">
-                <div className="col-md-10">
-                    <div className="card direct-chat direct-chat-warning">
+                    <div className="col-md-10">
                         <div className="card direct-chat direct-chat-warning">
-                            <div className="card-header">
-                                    <h3 className="card-title">Resultado { this.state.titulo}</h3>
-                                <div className="card-tools">
-                                    Registros
-                                    <button type="button" className="btn btn-tool" data-card-widget="collapse"><i className="fas fa-minus" />
-                                    </button>
+                            <div className="card direct-chat direct-chat-warning">
+                                <div className="card-header">
+                                        <h3 className="card-title">Resultado { this.state.titulo}</h3>
+                                    <div className="card-tools">
+                                        Registros
+                                        <button type="button" className="btn btn-tool" data-card-widget="collapse"><i className="fas fa-minus" />
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
                                 <div className="card-body " style={{ margin: "10px" }} > 
                                     <div style={{ width: '90%', margin: 'auto' }}>
                                         {

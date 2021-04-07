@@ -34,13 +34,13 @@ export default class TablaApexCurso extends Component<IProps,IState> {
 
         const body = this.state.cursos.map((curso:IPublicCurso, i:number)=>{
             return(
-                <tr key={'curso-'+i}>
-                    <td align='center'> {curso.course_id} </td>
+                <tr key={'curso-' + i}>
                     <td align='left'> 
                         { ScriptCrearCursos(curso) }
                     </td>
+                    <td align='center'> {curso.course_id} </td>
                     <td align='center' title='matriculable'> 
-                        <AlertYesNo status={curso.matriculable} />
+                        <AlertYesNo status={curso.calificable} />
                     </td>
                     <td align='center' title='inscritos en sinfo'> {curso.matriculadosapex} </td>
                     <td align='center' title='curso creado'>
@@ -51,13 +51,13 @@ export default class TablaApexCurso extends Component<IProps,IState> {
             )
         })
 
-        const pbody = this.state.cursos.map((curso:IPublicCurso, i:number)=>{
-            return(
-                <tr key={'periodo-'+i}>
-                    <td align='center'> {curso.course_id} </td>
-                    <td align='left' > 
-                        { ScriptPeriodoCursos(curso) }
+        const pbody = this.state.cursos.map((curso: IPublicCurso, i: number) => {
+            return (
+                <tr key={'periodo-' + i}>
+                    <td align='left' >
+                        {ScriptPeriodoCursos(curso)}
                     </td>
+                    <td align='center'> {curso.course_id} </td>
                     <td colSpan={4}></td>
                 </tr>
             )
@@ -68,13 +68,13 @@ export default class TablaApexCurso extends Component<IProps,IState> {
                                 .filter((sup:ISupervisores)=> sup.zonal === curso.zonal)
                                 .map((supervisor:ISupervisores, s:number)=>{
                     return(
-                <tr key={'sup-'+i + s}>
-                    <td align='center'> {curso.course_id} </td>
-                    <td align='left'> 
-                        { ScriptSupervisorCursos(curso,supervisor) }
-                    </td>
-                    <td colSpan={4}></td>
-                </tr>
+                            <tr key={'sup-'+i + s}>
+                                <td align='left'> 
+                                    { ScriptSupervisorCursos(curso,supervisor) }
+                                </td>
+                                <td align='center'> {curso.course_id} </td>
+                                <td colSpan={4}></td>
+                            </tr>
 
                     )
                 })
@@ -83,10 +83,10 @@ export default class TablaApexCurso extends Component<IProps,IState> {
         return (
             <Fragment>
                 <table className='table table-bordered table-striped table-sm' style={{fontSize:'small'}}>
-                    <thead className='table-secondary'>
+                    <thead className='bg-primary text-primary text-bold'>
                         <tr>
-                            <td rowSpan={2} align='center' width='20%'>IdCurso</td>
                             <td rowSpan={2} align='center'>Script - Clonar Curso</td>
+                            <td rowSpan={2} align='center' width='20%'>IdCurso</td>
                             <td colSpan={2} align='center'>sinfo</td>
                             <td colSpan={2} align='center'>BB</td>
                         </tr>

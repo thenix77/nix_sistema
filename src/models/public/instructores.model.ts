@@ -12,9 +12,9 @@ export interface IPublicInstructor{
     inicio:string
     fin:string
     calificable:string
-    cursocreado:string
     matriculable:string
-    usuarioenrolado:string
+    cursocreado:string
+    usuarioenrolado: string
     cursocerrado:string
     usuariovisiblecurso: string
     usuariovisiblebb:string

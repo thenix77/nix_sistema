@@ -13,7 +13,8 @@ interface IState {
     status: boolean
     enrolamientos: IPublicAlumno[]
 }
-export default class TableApexEnrolamiento extends  Component<IProps, IState> {
+
+export default class TablaApexAlumno extends Component<IProps, IState> {
     constructor(props: IProps) {
         super(props)
 
@@ -50,11 +51,8 @@ export default class TableApexEnrolamiento extends  Component<IProps, IState> {
                     
                     }    
                 </td>
-                <td align='center'>
-                    { alumno.nrc}
-                </td>
-                <td align='center'>
-                    { alumno.batch_uid}
+                <td>
+                    { alumno.course_id}
                 </td>
                 <td align='center' title='Deuda'> { alumno.deuda}</td>
                 <td align='center' title='Retirado'> 
@@ -81,8 +79,7 @@ export default class TableApexEnrolamiento extends  Component<IProps, IState> {
                     <thead >
                         <tr className='bg-primary text-white text-bold' >
                             <td rowSpan={2} align='center' className='align-middle' >Script</td>
-                            <td rowSpan={2} align='center' width='8%' className='align-middle' >NRC</td>
-                            <td rowSpan={2} align='center' width='15%' className='align-middle'>Id Alumno</td>
+                            <td rowSpan={2} align='center' width='20%' className='align-middle'>IdCurso</td>
                             <td colSpan={3} align='center' width='3%'>Sinfo</td>
                             <td colSpan={4} align='center' width='3%'>BB</td>
                         </tr>

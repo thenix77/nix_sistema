@@ -63,14 +63,14 @@ export default class TablaTutorialInstructor extends Component<IProps,IState> {
                             <td rowSpan={2} align='center' width=''    className='align-middle'>Instructor</td>
                             <td rowSpan={2} align='center' width='10%' className='align-middle'>Inicio</td>
                             <td rowSpan={2} align='center' width='10%' className='align-middle'>Fin</td>
-                            <td align='center'>Sinfo</td>
+                            <td align='center'>APEX</td>
                             <td colSpan={3} align='center'>BB</td>
                         </tr>
                         <tr>
-                            <td align='center' width='3%'>E</td>
-                            <td align='center'><i className="fas fa-book" title='curso creado'></i></td>
-                            <td align='center'><i className="fas fa-chalkboard" title='Usuario Enrolado'></i></td>
-                            <td align='center'><i className="fal fa-chalkboard-teacher" title='Usuario Visible'></i></td>
+                            <td align='center' title='Enrolable' width='3%'>E</td>
+                            <td align='center' title='curso creado'><i className="fas fa-book" ></i></td>
+                            <td align='center' title='Instructor Enrolado'><i className="far fa-book-user"></i></td>
+                            <td align='center' title='Instructor Visible'><i className="fal fa-chalkboard-teacher" ></i></td>
                         </tr>
                     </thead>
                     <tbody>
